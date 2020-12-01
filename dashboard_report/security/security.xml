@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <!--    <record id="hr_deductions_rule" model="ir.rule">
+            <field name="name">Employee Deductions</field>
+            <field ref="al_payroll.model_hr_deductions" name="model_id"/>
+        <field name="domain_force">['|',('employee_id.user_id','=',user.id),('employee_id.user_id','=',False)]</field>
+            <field name="groups" eval="[(4, ref('hr.group_hr_manager'))]"/>
+        </record> -->
+        <record model="ir.module.category" id="dashboard_coo">
+			<field name="name">Dashboard Security Group</field>
+			<field name="description">Allow only COO to view Dashboard Menu items</field>
+			<field name="sequence">41</field>
+		</record>
+		<record id="dashbord_view_sit" model="res.groups">
+			<field name="name">Dashboard Security</field>
+			<field name="category_id" ref="dashboard_report.dashboard_coo" />
+		</record>
+
+    </data>
+</odoo>
