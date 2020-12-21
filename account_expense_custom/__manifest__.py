@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Account Expense Custom",
-    "summary": "This module Adds functionality to manage Expenses based on Configurations.",
+    "summary": "This module Adds functionality to manage Expenses based on Configurations",
     "version": "12.0.7.0.0",
     "category": "Accounting",
     "license": "AGPL-3",
@@ -11,6 +11,7 @@
         'account_asset', 'purchase', 'account_accountant'
     ],
     "data": [
+        "security/security_view.xml",
         "security/ir.model.access.csv",
         "views/account_expense_type_view.xml",
         "views/account_expense_transaction_view.xml",

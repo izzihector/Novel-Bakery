@@ -9,36 +9,34 @@ class AccountInvoice(models.Model):
     @api.multi
     def action_invoice_open(self):
         res = super(AccountInvoice, self).action_invoice_open()
-        for invoice in self:
-            if invoice.invoice_line_ids.expense_nature == 'prepaid':
-                vals = {
-                    'date': fields.Date.today(),
-                    'journal_id': invoice.journal_id.id,
-                    'amortization_method': 'monthly',
-                    'reference': invoice.number,
-                    'payment_type': 'credit',
-                    'vendor_id': invoice.partner_id.id,
-                    'invoice_id': invoice.id,
-                    'move_id': invoice.move_id.id
-                }
-                transaction_rec = self.env['account.expense.transaction'].create(vals)
-
-                for invoice_line in invoice.invoice_line_ids:
-                    line_vals = {
-                        'expense_transaction_id': transaction_rec.id,
-                        'expense_type_id': invoice_line.expense_type_id.id,
-                        'description': invoice_line.name,
-                        'prepaid_expense_account_id': invoice_line.expense_type_id.prepaid_expense_account_id.id,
-                        'expense_account_id': invoice_line.expense_type_id.expense_account_id.id,
-                        'analytic_account_id': invoice_line.account_analytic_id.id,
-                        'analytic_tag_ids': invoice_line.analytic_tag_ids and [(6, 0, invoice_line.analytic_tag_ids.ids)],
-                        'start_date': invoice_line.start_date,
-                        'end_date': invoice_line.end_date,
-                        'quantity': invoice_line.quantity,
-                        'price_unit': invoice_line.price_unit
-                    }
-                    self.env['expense.detail.line'].create(line_vals)
-            return res
+        expense_product_line = self.env['account.invoice.line'].search(
+            [('invoice_id', '=', self.id), ('expense_nature', '=', 'prepaid')])
+        if expense_product_line:
+            vals = {
+                'date': fields.Date.today(),
+                'journal_id': self.journal_id.id,
+                'amortization_method': 'monthly',
+                'reference': self.number,
+                'payment_type': 'credit',
+                'vendor_id': self.partner_id.id,
+                'invoice_id': self.id,
+                'move_id': self.move_id.id
+            }
+            transaction_rec = self.env['account.expense.transaction'].create(vals)
+            for rec in expense_product_line:
+                transaction_rec.expense_detail_ids.create({
+                    'expense_transaction_id': transaction_rec.id,
+                    'expense_type_id': rec.expense_type_id.id,
+                    'description': rec.name,
+                    'prepaid_expense_account_id': rec.expense_type_id.prepaid_expense_account_id.id,
+                    'expense_account_id': rec.expense_type_id.expense_account_id.id,
+                    'analytic_account_id': rec.account_analytic_id.id,
+                    'analytic_tag_ids': rec.analytic_tag_ids and [(6, 0, rec.analytic_tag_ids.ids)],
+                    'start_date': rec.start_date,
+                    'end_date': rec.end_date,
+                    'quantity': rec.quantity,
+                    'price_unit': rec.price_unit})
+        return res
 
 
 class AccountInvoiceLine(models.Model):
@@ -64,6 +62,13 @@ class AccountInvoiceLine(models.Model):
         if self.expense_nature == 'prepaid':
             for invoice_line in self:
                 invoice_line.account_id = invoice_line.product_id.expense_type_id.prepaid_expense_account_id.id
+                invoice_line.expense_type_id = invoice_line.product_id.expense_type_id.id
+
+    @api.onchange('expense_type_id')
+    def onchange_expense_type(self):
+        if self.expense_type_id:
+            for invoice_line in self:
+                invoice_line.account_id = invoice_line.expense_type_id.prepaid_expense_account_id.id
 
 
     @api.onchange('product_id')

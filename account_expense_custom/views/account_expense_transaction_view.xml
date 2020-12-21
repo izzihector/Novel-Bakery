@@ -36,17 +36,11 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button class="oe_stat_button" name="open_entries"  type="object" icon="fa-pencil">
-                            <field string="Expense" name="entry_count" widget="statinfo" />
+                        <button class="oe_stat_button" name="open_entries" type="object" icon="fa-pencil"
+                            attrs="{'invisible': [('entry_count', '=', 0)]}">
+                            <field string="Journal Entries" name="entry_count" widget="statinfo"/>
                         </button>
                     </div>
-<!--
-                    <div class="oe_button_box" name="button_box">
-                        <button class="oe_stat_button" name="open_entries_line"  type="object" icon="fa-pencil">
-                            <field string="Expense Line" name="entry_count_line" widget="statinfo" />
-                        </button>
-                    </div>
--->
                     <group>
                         <group>
                             <field name="date" />
@@ -54,11 +48,12 @@
                             <field name="amortization_method" />
                             <field name="reference" />
                             <field name="move_id" />
+                            <field name="company_id" groups="base.group_multi_company"/>
                         </group>
                         <group>
-                            <field name='company_id' options="{'no_create': True}" groups="base.group_multi_company"/>
                             <field name="journal_id" options="{'no_create_edit':True, 'no_create':True}"/>
                             <field name="payment_type" attrs="{'invisible':[('expense_nature','=','accrual')], 'required':[('expense_nature','=','prepaid')]}"/>
+                            <field name="type_jv" string="Type JV" required="1"/>
                             <field name="payment_journal_id" options="{'no_create_edit':True, 'no_create':True}"
                                    attrs="{'invisible':[('payment_type','!=','bank_cash')], 'required':[('payment_type','=','bank_cash')]}" />
                             <field name="bank_account_id" options="{'no_create_edit':True, 'no_create':True}"
@@ -71,9 +66,10 @@
                     </group>
                     <notebook>
                         <page string="Expenses Details" >
-                            <field name="expense_detail_ids" context="{'reference':reference, 'expense_nature': expense_nature}">
+                            <field name="expense_detail_ids" context="{'reference':reference, 'expense_nature': expense_nature, 'company_id':company_id}">
                                 <tree editable="bottom">
-                                    <field name="expense_type_id" domain="[('expense_nature','=',parent.expense_nature)]"/>
+                                    <field name="company_id" invisible="1"/>
+                                    <field name="expense_type_id" domain="[('expense_nature','=',parent.expense_nature),('company_id','=', company_id)]"/>
                                     <field name="description"/>
                                     <field name="prepaid_expense_account_id"/>
                                     <field name="expense_account_id"/>
@@ -101,6 +97,7 @@
                                     <field name="amortization_accumulated"/>
                                     <field name="remaining_value"/>
                                     <field name="move_id" invisible="0"/>
+                                    <field name="company_id" invisible="1"/>
                                     <button name="post_entry"
                                             string="Post" type="object" class="btn-primary"
                                             attrs="{'invisible':[('move_id','!=',False)]}"/>

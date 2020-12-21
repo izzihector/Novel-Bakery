@@ -26,25 +26,13 @@ class ExpenseType(models.Model):
                                                    states={'confirmed': [('readonly', True)]},
                                                    help="""If you choice Monthly, you can distribute expenses Monthly.
                                                    If your choice On Time, you can’t distribute expenses Monthly""")
-    prepaid_expense_account_id = fields.Many2one("account.account", string="Prepaid Expense account",
+    prepaid_expense_account_id = fields.Many2one("account.account", string="Prepaid/Accrual Expense account",
                                                  states={'confirmed': [('readonly', True)]},
                                                  domain="[('internal_type', '=', 'other')]")
     expense_account_id = fields.Many2one("account.account", string="Expense account",
                                          states={'confirmed': [('readonly', True)]},
                                          domain="[('internal_type', '=', 'other')]")
-    company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.user.company_id)
-    # For Accrual Expense
-    # accrual_amortization_method = fields.Selection([('monthly', 'Monthly'), ('on_time', 'On Time')],
-    #                                                string='Amortization Method',
-    #                                                states={'confirmed': [('readonly', True)]},
-    #                                                help="""If you choice Monthly, you can distribute expenses Monthly.
-    #                                                     If your choice On Time, you can’t distribute expenses Monthly""")
-    # accrual_expense_account_id = fields.Many2one("account.account", string="Accrual Expense account",
-    #                                              states={'confirmed': [('readonly', True)]},
-    #                                              domain="[('internal_type', '=', 'other')]")
-    # expense_acrl_account_id = fields.Many2one("account.account", string="Expense account",
-    #                                           states={'confirmed': [('readonly', True)]},
-    #                                           domain="[('internal_type', '=', 'other')]")
+    company_id = fields.Many2one('res.company', 'Company', required=True, default=lambda self: self.env.user.company_id)
 
     @api.onchange("expense_nature")
     def _onchange_expense_nature(self):

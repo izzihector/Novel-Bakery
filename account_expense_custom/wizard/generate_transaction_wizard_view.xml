@@ -9,7 +9,7 @@
                     <group>
                         <field name="account_date"/>
                         <field name="expense_nature"/>
-                        <field name="journal_id" options="{'no_create_edit':True, 'no_create':True}"/>
+<!--                        <field name="journal_id" options="{'no_create_edit':True, 'no_create':True}"/>  -->
                         <field name="group_journal_entries"/>
                     </group>
                 </group>
