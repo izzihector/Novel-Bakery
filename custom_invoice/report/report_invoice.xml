@@ -11,7 +11,7 @@
         />
          <report
                 id="action_print_invoices_payment"
-                string="Invoices with Payments"
+                string="Invoices without Payments"
                 model="account.invoice"
                 report_type="qweb-pdf"
                 name="custom_invoice.report_invoice_with_payments_document_custom_sit"
@@ -28,7 +28,7 @@
 		<t t-raw="0" />
 
 	</template>
-        <template id="report_invoice_document_custom_sit">
+        <template id="report_invoice_with_payments_document_custom_sit">
             <t t-call="web.html_container">
             <t t-call="web.basic_layout">
                 <t t-as="o" t-foreach="docs">
@@ -37,54 +37,17 @@
 					<table class="table table-condensed">
 						<tr style="font-size:24px">
 						<td align="center" name="title" valign="middle">
-						<br></br>
-						<b t-if="o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')">VAT INVOICE</b>
+
+						<b t-if="o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')">INVOICE / فاتورة</b>
 						<b t-if="o.type == 'out_refund'">REFUND INVOICE</b>
 						</td>
 						</tr>
 					</table>
-                    <!--<div class="row mt32 mb32" style="font-size:12px">
-                        <div class="col-auto mw-100 mb-2">
-                            <strong>Invoice Date/تاريخ الفاتورة:</strong>
-                            <p class="m-0" t-field="o.date_invoice"/>
-                        </div>
-
-                        <div class="col-auto mw-100 mb-2" t-if="o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')">
-                            <strong>Invoice/فاتورة ضريبية:</strong>
-                            <p class="m-0" t-field="o.number"/>
-                        </div>
-
-                        <div class="col-auto mw-100 mb-2" t-if="o.type == 'out_invoice' and o.state == 'draft'">
-                            <strong>Draft Invoice/مشروع فاتورة</strong>
-                        </div>
-
-                        <div class="col-auto mw-100 mb-2" t-if="o.type == 'out_invoice' and o.state == 'cancel'">
-                            <strong>Cancelled Invoice/فاتورة ملغاة</strong>
-                        </div>
-
-                        <div class="col-auto mw-100 mb-2" t-if="o.type == 'out_refund'">
-                            <strong>Credit Note/ملاحظة ائتمانية</strong>
-                        </div>
-
-                        <div class="col-auto mw-100 mb-2" t-if="o.type == 'in_refund'">
-                            <strong>Vendor Credit Note/ملاحظة ائتمان البائع</strong>
-                        </div>
-
-                        <div class="col-auto mw-100 mb-2" t-if="o.type == 'in_invoice'">
-                            <strong>Vendor Bill/بائع بيل:</strong>
-                            <p class="m-0" t-field="o.number"/>
-                        </div>
-
-                        <div class="col-auto mw-100 mb-2">
-                            <strong>Due Date/تاريخ الاستحقاق:</strong>
-                            <p class="m-0" t-field="o.date_due"/>
-                        </div>
-                    </div>-->
                       <style>
                          .table1{
                        table-layout: fixed;
                        width:540px;
-                          height:150px;
+                          height:160px;
                           border:1px solid black;}
                     </style>
                                 <div style = "position:relative; left:1px" align="center">
@@ -111,19 +74,19 @@
                                             <span t-field="o.company_id.name"/>&#160;&#160;
                                         </td>
                                     </tr>
-                                    <tr t-if="o.company_id.street">
+                                    <tr>
                                         <td ><strong>&#160;&#160;Address/العنوان:</strong></td>
                                         <td class="text-right">
                                             <span t-field="o.company_id.street"/>, &#160;<span t-field="o.company_id.city"/>&#160;&#160;
                                         </td>
                                     </tr>
-                                  <tr t-if="o.company_id.phone">
+                                  <tr>
                                         <td ><strong>&#160;&#160;Phone/الهاتف:</strong></td>
                                         <td class="text-right">
                                             <span t-field="o.company_id.phone"/>&#160;&#160;
                                         </td>
                                     </tr>
-                                    <tr t-if="o.company_id.vat">
+                                    <tr>
                                         <td class="text-left"><strong>&#160;&#160;VAT Number/الظريبه الشراء:</strong></td>
                                         <td class="text-right">
                                             <span t-esc="o.company_id.vat" />&#160;&#160;
@@ -131,13 +94,13 @@
                                     </tr>
 
 
-                                     <tr t-if="o.date_invoice">
+                                     <tr>
                                         <td class="text-left"><strong>&#160;&#160;Invoice Date/التاريخ فاتورة:</strong></td>
                                         <td class="text-right">
                                             <span t-field="o.date_invoice"/>&#160;&#160;
                                         </td>
                                     </tr>
-                                    <tr t-if="o.date_due">
+                                    <tr>
                                         <td class="text-left"><strong>&#160;&#160;Due Date/تاريخ الاستحقاق:</strong></td>
                                         <td class="text-right">
                                             <span t-field="o.date_due"/>&#160;&#160;
@@ -149,19 +112,19 @@
 
                             <div style = "position:relative; left:120px" align="center">
                                 <table class="table1">
-                                      <tr t-if="o.reference">
+                                      <tr>
                                         <td ><strong>&#160;&#160;Invoice/فاتورة:</strong></td>
                                         <td class="text-right">
                                             <span t-field="o.number"/>&#160;&#160;
                                         </td>
                                     </tr>
-                                             <tr t-if="o.partner_id">
+                                             <tr>
                                         <td class="text-left"><strong>&#160;&#160;Name/اسم :</strong></td>
                                         <td class="text-right"><span t-esc="o.partner_id.name"/> &#160;<span t-esc="o.partner_id.ref"/>
                                             &#160;&#160;
                                         </td>
                                     </tr>
-                                <tr t-if="o.partner_id.street">
+                                <tr>
                                         <td class="text-left"><strong>&#160;&#160;Address/العنوان:</strong></td>
                                         <td class="text-right">
                                             <span t-esc="o.partner_id.street"/>,&#160;<span t-esc="o.partner_id.city"/>&#160;&#160;
@@ -173,14 +136,14 @@
                                             <span t-esc="o.partner_id.country_id.name"/>&#160;&#160;
                                         </td>
                                     </tr>
-                                  <tr t-if="o.partner_id.phone">
+                                  <tr>
                                         <td class="text-left"><strong>&#160;&#160;Phone/الهاتف:</strong></td>
                                         <td class="text-right">
                                             <span t-esc="o.partner_id.phone" />&#160;&#160;
                                         </td>
                                     </tr>
 
-                                 <tr t-if="o.partner_id.vat">
+                                 <tr>
                                         <td class="text-left"><strong>&#160;&#160;VAT Number/الظريبه الشراء:</strong></td>
                                         <td class="text-right">
                                             <span t-esc="o.partner_id.vat" />&#160;&#160;
@@ -200,6 +163,8 @@
 		                        <th class="text-center">Sr<br/>التسلسل</th>
         		                <th class="text-center">Code<br/>كود</th>
                                 <th class="text-left">Description<br/>التفاصيل</th>
+                                <th class="text-left">Lot Number<br/>عدد الكثير</th>
+                                <th class="text-left">Expiry Date<br/>تاريخ الانتهاء</th>
                                 <th class="text-left">Source Document<br/>مصدر وثائق</th>
                                 <th class="text-center">Quantity<br/>الكمية</th>
                                 <th class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">Unit Price<br/>سعر الوحدة</th>
@@ -214,6 +179,8 @@
                                 <td class="text-center"><span t-esc="i"/></td>
 		                        <td class="text-center"><span t-field="l.product_id.code"/></td>
 		                        <td class="text-left"><span t-field="l.name"/></td>
+                                <td class="text-left"><span t-field="l.lot_number"/></td>
+                                <td class="text-left"><span t-field="l.expire_date"/></td>
                                 <td class="text-left"><span t-field="l.origin"/></td>
                                 <td class="text-center">
                                     <span t-field="l.quantity"/>
@@ -290,8 +257,33 @@
                         PLEASE USE THE FOLLOWING COMMUNICATION FOR YOUR PAYMENT : <b><span t-field="o.reference"/></b>
                     </p>
 
-				        <br/>
-						  <div class="text-left" t-if="o.name" style="font-size:16px">
+                       <table>
+                                    <tr class="text-left" t-if="o.name" style="font-size:16px">
+                                        <td><strong>Reference/مرجع :</strong></td>
+                                        <td class="text-left">
+                                            <span t-field="o.name"/>
+                                        </td>
+                                    </tr>
+                                <tr class="text-left" t-if="o.comment" style="font-size:16px">
+                                        <td><strong>Comments/تعليقات:</strong></td>
+                                        <td class="text-left">
+                                            <span t-field="o.comment"/>
+                                        </td>
+                                    </tr>
+                               <tr class="text-left" t-if="o.payment_term_id" style="font-size:16px">
+                                        <td><strong>Payment Terms/شروط الدفع:</strong></td>
+                                        <td class="text-left">
+                                            <span t-field="o.payment_term_id"/>
+                                        </td>
+                                    </tr>
+                                 <tr class="text-left" t-if="o.fiscal_position_id.note" style="font-size:16px">
+                                        <td><strong>Fiscal Position/الوضع المالي:</strong></td>
+                                        <td class="text-left">
+                                            <span t-field="o.fiscal_position_id.note"/>
+                                        </td>
+                                    </tr>
+                       </table>
+					<!--	  <div class="text-left" t-if="o.name" style="font-size:16px">
                                 <strong>Reference/مرجع:</strong>
                                 <span t-field="o.name"/>
                             </div>
@@ -320,10 +312,9 @@
                         <p t-if="(o.partner_bank_id.qr_code_valid == False)">
                             <strong class="text-center">THE SEPA QR CODE INFORMATIONS ARE NOT SET CORRECTLY.</strong><br />
                         </p>
-                    </div>
+                    </div>-->
                 </div>
-                        <br /><br /><br /><br />
-						  <p>
+                        <p>
                       <b> Declaration/ملاحظة:</b><br /> The product can only be returned if there are defects in the product.
 I hereby certify that the above products are in good condition in accordance with the agreed terms.
                             <br />
@@ -366,7 +357,7 @@ I hereby certify that the above products are in good condition in accordance wit
          <template id="packing_header_diff">
 
 	<div class="header">
-             <t t-if="o.company_id.name == 'IF Dimensions'">
+
             <div class="row">
                 <div class="col-3 mb4">
                     <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 75px;" alt="Logo"/>
@@ -383,64 +374,138 @@ I hereby certify that the above products are in good condition in accordance wit
                     <div style="font-weight:bold" t-field="company.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: true}"/>
                 </div>
             </div>
-</t>
         </div>
 	</template>
 
         <!--With Payment -->
 
-         <template id="report_invoice_with_payments_document_custom_sit">
+         <template id="report_invoice_document_custom_sit">
             <t t-call="web.html_container">
             <t t-call="web.basic_layout">
                 <t t-as="o" t-foreach="docs">
                     <t t-call="custom_invoice.general_header_diff">
                 <div class="page">
-					<table class="table table-condensed">
+	<table class="table table-condensed">
 						<tr style="font-size:24px">
 						<td align="center" name="title" valign="middle">
-						<br></br>
-						<b t-if="o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')">VAT INVOICE</b>
+
+						<b t-if="o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')">INVOICE / فاتورة</b>
 						<b t-if="o.type == 'out_refund'">REFUND INVOICE</b>
 						</td>
 						</tr>
 					</table>
-                    <div class="row mt32 mb32" style="font-size:12px">
-                        <div class="col-auto mw-100 mb-2">
-                            <strong>Invoice Date/تاريخ الفاتورة:</strong>
-                            <p class="m-0" t-field="o.date_invoice"/>
-                        </div>
+                      <style>
+                         .table1{
+                       table-layout: fixed;
+                       width:540px;
+                          height:160px;
+                          border:1px solid black;}
+                    </style>
+                                <div style = "position:relative; left:1px" align="center">
+			<h3>
 
-                        <div class="col-auto mw-100 mb-2" t-if="o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')">
-                            <strong>Invoice/فاتورة ضريبية:</strong>
-                            <p class="m-0" t-field="o.number"/>
-                        </div>
-
-                        <div class="col-auto mw-100 mb-2" t-if="o.type == 'out_invoice' and o.state == 'draft'">
+                        <t t-if="o.type == 'out_invoice' and o.state == 'draft'">
                             <strong>Draft Invoice/مشروع فاتورة</strong>
-                        </div>
+                        </t>
 
-                        <div class="col-auto mw-100 mb-2" t-if="o.type == 'out_invoice' and o.state == 'cancel'">
+                        <t t-if="o.type == 'out_invoice' and o.state == 'cancel'">
                             <strong>Cancelled Invoice/فاتورة ملغاة</strong>
+                        </t>
+
+					</h3>
+					</div>
+                          <br /><br />
+                    <div class="clearfix">
+                        <div id="total" class="row">
+                        <div style="position:relative; left:20px" align="center">
+                            <table class="table1">
+                      <tr t-if="o.company_id">
+                                        <td ><strong>&#160;&#160;Company Name:</strong></td>
+                                        <td class="text-right">
+                                            <span t-field="o.company_id.name"/>&#160;&#160;
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td ><strong>&#160;&#160;Address/العنوان:</strong></td>
+                                        <td class="text-right">
+                                            <span t-field="o.company_id.street"/>, &#160;<span t-field="o.company_id.city"/>&#160;&#160;
+                                        </td>
+                                    </tr>
+                                  <tr>
+                                        <td ><strong>&#160;&#160;Phone/الهاتف:</strong></td>
+                                        <td class="text-right">
+                                            <span t-field="o.company_id.phone"/>&#160;&#160;
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left"><strong>&#160;&#160;VAT Number/الظريبه الشراء:</strong></td>
+                                        <td class="text-right">
+                                            <span t-esc="o.company_id.vat" />&#160;&#160;
+                                        </td>
+                                    </tr>
+
+
+                                     <tr>
+                                        <td class="text-left"><strong>&#160;&#160;Invoice Date/التاريخ فاتورة:</strong></td>
+                                        <td class="text-right">
+                                            <span t-field="o.date_invoice"/>&#160;&#160;
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left"><strong>&#160;&#160;Due Date/تاريخ الاستحقاق:</strong></td>
+                                        <td class="text-right">
+                                            <span t-field="o.date_due"/>&#160;&#160;
+                                        </td>
+                                    </tr>
+
+                            </table>
                         </div>
 
-                        <div class="col-auto mw-100 mb-2" t-if="o.type == 'out_refund'">
-                            <strong>Credit Note/ملاحظة ائتمانية</strong>
-                        </div>
+                            <div style = "position:relative; left:120px" align="center">
+                                <table class="table1">
+                                      <tr>
+                                        <td ><strong>&#160;&#160;Invoice/فاتورة:</strong></td>
+                                        <td class="text-right">
+                                            <span t-field="o.number"/>&#160;&#160;
+                                        </td>
+                                    </tr>
+                                             <tr>
+                                        <td class="text-left"><strong>&#160;&#160;Name/اسم :</strong></td>
+                                        <td class="text-right"><span t-esc="o.partner_id.name"/> &#160;<span t-esc="o.partner_id.ref"/>
+                                            &#160;&#160;
+                                        </td>
+                                    </tr>
+                                <tr>
+                                        <td class="text-left"><strong>&#160;&#160;Address/العنوان:</strong></td>
+                                        <td class="text-right">
+                                            <span t-esc="o.partner_id.street"/>,&#160;<span t-esc="o.partner_id.city"/>&#160;&#160;
+                                        </td>
+                                    </tr>
+                                    <tr t-if="o.partner_id.country_id">
+                                        <td class="text-left"><strong>&#160;&#160;Country/بلد:</strong></td>
+                                        <td class="text-right">
+                                            <span t-esc="o.partner_id.country_id.name"/>&#160;&#160;
+                                        </td>
+                                    </tr>
+                                  <tr>
+                                        <td class="text-left"><strong>&#160;&#160;Phone/الهاتف:</strong></td>
+                                        <td class="text-right">
+                                            <span t-esc="o.partner_id.phone" />&#160;&#160;
+                                        </td>
+                                    </tr>
 
-                        <div class="col-auto mw-100 mb-2" t-if="o.type == 'in_refund'">
-                            <strong>Vendor Credit Note/ملاحظة ائتمان البائع</strong>
-                        </div>
+                                 <tr>
+                                        <td class="text-left"><strong>&#160;&#160;VAT Number/الظريبه الشراء:</strong></td>
+                                        <td class="text-right">
+                                            <span t-esc="o.partner_id.vat" />&#160;&#160;
+                                        </td>
+                                    </tr>
 
-                        <div class="col-auto mw-100 mb-2" t-if="o.type == 'in_invoice'">
-                            <strong>Vendor Bill/بائع بيل:</strong>
-                            <p class="m-0" t-field="o.number"/>
-                        </div>
-
-                        <div class="col-auto mw-100 mb-2">
-                            <strong>Due Date/تاريخ الاستحقاق:</strong>
-                            <p class="m-0" t-field="o.date_due"/>
+                                </table>
+                            </div>
                         </div>
                     </div>
+               <br /><br />
                     <t t-set="display_discount" t-value="any([l.discount for l in o.invoice_line_ids])"/>
 
                     <table class="table table-sm o_main_table" name="invoice_line_table" style="font-size:12px">
@@ -449,6 +514,8 @@ I hereby certify that the above products are in good condition in accordance wit
 		                        <th class="text-center">Sr<br/>التسلسل</th>
         		                <th class="text-center">Code<br/>كود</th>
                                 <th class="text-left">Description<br/>التفاصيل</th>
+                                <th class="text-left">Lot Number<br/>عدد الكثير</th>
+                                <th class="text-left">Expiry Date<br/>تاريخ الانتهاء</th>
                                 <th class="text-left">Source Document<br/>مصدر وثائق</th>
                                 <th class="text-center">Quantity<br/>الكمية</th>
                                 <th class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">Unit Price<br/>سعر الوحدة</th>
@@ -463,6 +530,8 @@ I hereby certify that the above products are in good condition in accordance wit
                                 <td class="text-center"><span t-esc="i"/></td>
 		                        <td class="text-center"><span t-field="l.product_id.code"/></td>
 		                        <td class="text-left"><span t-field="l.name"/></td>
+                                <td class="text-left"><span t-field="l.lot_number"/></td>
+                                <td class="text-left"><span t-field="l.expire_date"/></td>
                                 <td class="text-left"><span t-field="l.origin"/></td>
                                 <td class="text-center">
                                     <span t-field="l.quantity"/>
@@ -547,22 +616,59 @@ I hereby certify that the above products are in good condition in accordance wit
                             </div>
                         </div>
                     </div>
+                  <p t-if="o.text_amount">
+                      <b>  المبلغ المستحق (بالكلمات) :</b> <span t-field="o.text_amount"/>
+                    </p>
+                       <p t-if="o.tax_text_amount">
+                      <b>  مبلغ ضريبة القيمة المضافة (بالكلمات) :</b> <span t-field="o.tax_text_amount"/>
+                    </p>
+                    <br />
                     <p t-if="o.reference">
                         PLEASE USE THE FOLLOWING COMMUNICATION FOR YOUR PAYMENT : <b><span t-field="o.reference"/></b>
                     </p>
+                            <table>
+                                    <tr class="text-left" t-if="o.name" style="font-size:16px">
+                                        <td><strong>Reference/مرجع :</strong></td>
+                                        <td class="text-left">
+                                            <span t-field="o.name"/>
+                                        </td>
+                                    </tr>
+                                <tr class="text-left" t-if="o.comment" style="font-size:16px">
+                                        <td><strong>Comments/تعليقات:</strong></td>
+                                        <td class="text-left">
+                                            <span t-field="o.comment"/>
+                                        </td>
+                                    </tr>
+                               <tr class="text-left" t-if="o.payment_term_id" style="font-size:16px">
+                                        <td><strong>Payment Terms/شروط الدفع:</strong></td>
+                                        <td class="text-left">
+                                            <span t-field="o.payment_term_id"/>
+                                        </td>
+                                    </tr>
+                                 <tr class="text-left" t-if="o.fiscal_position_id.note" style="font-size:16px">
+                                        <td><strong>Fiscal Position/الوضع المالي:</strong></td>
+                                        <td class="text-left">
+                                            <span t-field="o.fiscal_position_id.note"/>
+                                        </td>
+                                    </tr>
+                       </table>
 
-				        <br/>
-                            <div class="text-left" t-if="o.comment" style="font-size:10px">
+					<!--	  <div class="text-left" t-if="o.name" style="font-size:16px">
+                                <strong>Reference/مرجع:</strong>
+                                <span t-field="o.name"/>
+                            </div>
+							<br/>
+                            <div class="text-left" t-if="o.comment" style="font-size:16px">
                                 <strong>Comments/تعليقات:</strong>
                                 <span t-field="o.comment"/>
                             </div>
 					    <br/>
-                            <div class="text-left" t-if="o.payment_term_id" style="font-size:10px">
+                            <div class="text-left" t-if="o.payment_term_id" style="font-size:16px">
                                 <strong>Payment Terms/شروط الدفع:</strong>
                                 <span t-field="o.payment_term_id"/>
                             </div>
 					    <br/>
-                            <div class="text-left" t-if="o.fiscal_position_id.note" style="font-size:10px">
+                            <div class="text-left" t-if="o.fiscal_position_id.note" style="font-size:16px">
                                 <strong>Fiscal Position/الوضع المالي:</strong>
                                 <span t-field="o.fiscal_position_id.note"/>
                             </div>
@@ -576,30 +682,37 @@ I hereby certify that the above products are in good condition in accordance wit
                         <p t-if="(o.partner_bank_id.qr_code_valid == False)">
                             <strong class="text-center">THE SEPA QR CODE INFORMATIONS ARE NOT SET CORRECTLY.</strong><br />
                         </p>
-                    </div>
+                    </div>-->
                 </div>
+
+						  <p>
+                      <b> Declaration/ملاحظة:</b><br /> The product can only be returned if there are defects in the product.
+I hereby certify that the above products are in good condition in accordance with the agreed terms.
+                            <br />
+                            لا يمكن اعادة المنتج إلا في حال وجود عيوب في المنتج.أقر هنا بأن المنتجات المذكورة أعلاه بحالة جيدة وفقًا للشروط المتفق عليها
+                    </p>
 	            <table class="table table-condensed">
                     <tbody>
 	                    <tr>
 		                    <td class="text-center" name="1" align="left" valign="baseline">
 		                    <br/>
-		                    <strong>____________________</strong>
+		                    <strong>___________________________</strong>
 		                    <br/>
-		                    <strong>Name/اسم المستلم</strong>
+		                    <strong>Customer Seal and Signature</strong>
 		                    </td>
 
 		                    <td class="text-center" name="1" align="center" valign="baseline">
 		                    <br/>
 		                    <strong>____________________</strong>
 		                    <br/>
-		                    <strong>Signature/التوقيع</strong>
+		                    <strong>Signature</strong>
 		                    </td>
 
 		                    <td class="text-center" name="1" align="right" valign="baseline">
 		                    <br/>
-		                    <strong>____________________</strong>
+		                    <strong>______________________</strong>
 		                    <br/>
-		                    <strong>Date/التاريخ</strong>
+		                    <strong>Authorised Signature</strong>
 		                    </td>
 	                    </tr>
                     </tbody>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="sale_line_order_inherit" model="ir.ui.view">
+            <field name="name">sale.line.view.sit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="after">
+                    <field name="lot_number" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}" />
+                    <field name="expiry_date" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="invoice_line_order_inherit" model="ir.ui.view">
+            <field name="name">invoice.line.view.sit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='name']" position="after">
+                    <field name="lot_number" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}" />
+                    <field name="expire_date" />
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
