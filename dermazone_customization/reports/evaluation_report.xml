@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+	  <report
+                id="action_print_evaluation_print"
+                string="Evaluation Form"
+                model="sale.order"
+                report_type="qweb-pdf"
+                name="dermazone_customization.report_custom_evaluation_form"
+                file="dermazone_customization.report_custom_evaluation_form"
+        />
+     <template id="general_header_diff">
+		<t t-if="o and 'company_id' in o">
+			<t t-set="company" t-value="o.company_id" />
+		</t>
+		<t t-if="not o or not 'company_id' in o">
+			<t t-set="company" t-value="res_company" />
+		</t>
+    		<t t-call="dermazone_customization.packing_header_diff" />
+		<t t-raw="0" />
+	</template>
+
+     <template id="report_custom_evaluation_form">
+            <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <t t-as="o" t-foreach="docs">
+                    <t t-call="dermazone_customization.general_header_diff">
+                <div class="page">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td align="center" style="font-size:11px">
+                                <strong>No.&#160;<span t-field="o.name" /></strong>
+                            </td>
+                            <td align="center" style="font-size:11px">
+                                <strong><span t-field="o.name" />&#160;:رقم الطلب</strong>
+                            </td>
+                        </tr>
+                    </table>
+                     <table class="table table-bordered">
+                        <tr>
+                            <td align="center" style="font-size:11px">
+                                <strong>Date :&#160;<span t-field="o.validity_date" /></strong>
+                            </td>
+                            <td align="center" style="font-size:11px">
+                                <strong><span t-field="o.validity_date" />&#160;:التاريخ </strong>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td align="center" style="font-size:11px">
+                                <strong>Customer Name :&#160;<span t-field="o.partner_id.english_name" /></strong>
+                            </td>
+                            <td align="center" style="font-size:11px">
+                                <strong><span t-field="o.partner_id.name" />&#160;:اسم العميل </strong>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td align="center" style="font-size:11px">
+                                <strong>Pay Type :&#160;<span t-field="o.payment_term_id.name" /></strong>
+                            </td>
+                            <td align="center" style="font-size:11px">
+                                <strong><span t-field="o.payment_term_id.name" />&#160;:شروط الدفع </strong>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td align="center" style="font-size:11px">
+                                <strong>Med.Rep :&#160;<span t-field="o.user_id.name" /></strong>
+                            </td>
+                            <td align="center" style="font-size:11px">
+                                <strong><span t-field="o.user_id.name" />&#160;:اسم المندوب </strong>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td align="center" style="font-size:11px">
+                                <strong>AVG Sales during 6 months:&#160;<span t-esc="o.get_customer_value()[0]" /></strong>
+                            </td>
+                            <td align="center" style="font-size:11px">
+                                <strong><span t-esc="o.get_customer_value()[0]" />&#160;:متوسط ​​المبيعات خلال 6 أشهر </strong>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td align="center" style="font-size:11px">
+                                <strong>AVG Collection during 6 months:&#160;<span t-esc="o.get_customer_value()[1]" /></strong>
+                            </td>
+                            <td align="center" style="font-size:11px">
+                                <strong><span t-esc="o.get_customer_value()[1]" />&#160;:متوسط ​​التحصيل خلال 6 أشهر </strong>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td align="center" style="font-size:11px">
+                                <strong>Order Value :&#160;<span t-field="o.amount_total" /></strong>
+                            </td>
+                            <td align="center" style="font-size:11px">
+                                <strong><span t-field="o.amount_total" />&#160;:كمية الطلب </strong>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td align="center" style="font-size:11px">
+                                <strong>Sum Invoice Value Month 12 :&#160;<span t-esc="o.get_invoice_value()[0]" /></strong>
+                            </td>
+                            <td align="center" style="font-size:11px">
+                                <strong><span t-esc="o.get_invoice_value()[0]" />&#160;:مجموع قيمة الفاتورة الشهر 12 </strong>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table class="table table-bordered">
+                        <tr>
+                            <td align="center" style="font-size:11px">
+                                <strong>Sum Invoice Value Month 1 :&#160;<span t-esc="o.get_invoice_value()[2]" /></strong>
+                            </td>
+                            <td align="center" style="font-size:11px">
+                                <strong><span t-esc="o.get_invoice_value()[2]" />&#160;:مجموع قيمة الفاتورة الشهر 1 </strong>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td align="center" style="font-size:11px">
+                                <strong>Last Invoice Date :&#160;<span t-esc="o.get_invoice_value()[1]" /></strong>
+                            </td>
+                            <td align="center" style="font-size:11px">
+                                <strong><span t-esc="o.get_invoice_value()[1]" />&#160;:تاريخ آخر فاتورة </strong>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td align="center" style="font-size:11px">
+                                <strong>Last Cheque Value :&#160;<span t-esc="o.get_customer_value()[3]" /></strong>
+                            </td>
+                            <td align="center" style="font-size:11px">
+                                <strong><span t-esc="o.get_customer_value()[3]" />&#160;:مبلغ الشيك الأخير </strong>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td align="center" style="font-size:11px">
+                                <strong>Last Cheque Date :&#160;<span t-esc="o.get_customer_value()[2]" /></strong>
+                            </td>
+                            <td align="center" style="font-size:11px">
+                                <strong><span t-esc="o.get_customer_value()[2]" />&#160;:تاريخ آخر فحص </strong>
+                            </td>
+                        </tr>
+                    </table>
+                  <table class="table table-condensed">
+                        <tr style="font-size:14px">
+                            <td align="center" name="title" valign="middle">
+                                <b>اعمار الديون</b>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td align="center" style="font-size:9px">
+                                <strong>(0, 30)</strong>
+                            </td>
+                              <td align="center" style="font-size:9px">
+                                <strong>(31, 60)</strong>
+                            </td>
+                              <td align="center" style="font-size:9px">
+                                <strong>(61, 90)</strong>
+                            </td>
+                              <td align="center" style="font-size:9px">
+                                <strong>(91, 120)</strong>
+                            </td>
+                              <td align="center" style="font-size:9px">
+                                <strong>(121, 150)</strong>
+                            </td>
+                              <td align="center" style="font-size:9px">
+                                <strong>(151, 180)</strong>
+                            </td>
+                              <td align="center" style="font-size:9px">
+                                <strong>Older than 180</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" style="font-size:9px">
+                                <strong>.</strong>
+                            </td>
+                              <td align="center" style="font-size:9px">
+                                <strong>.</strong>
+                            </td>
+                              <td align="center" style="font-size:9px">
+                                <strong>.</strong>
+                            </td>
+                              <td align="center" style="font-size:9px">
+                                <strong>.</strong>
+                            </td>
+                              <td align="center" style="font-size:9px">
+                                <strong>.</strong>
+                            </td>
+                              <td align="center" style="font-size:9px">
+                                <strong>.</strong>
+                            </td>
+                              <td align="center" style="font-size:9px">
+                                <strong>.</strong>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table table-condensed">
+                    <tbody>
+	                    <tr>
+		                    <td class="text-center" name="1" align="left" valign="baseline">
+		                    <br/>
+		                    <strong>___________________________</strong>
+		                    <br/>
+		                    <strong>توقيع المدير التنفيذي</strong>
+		                    </td>
+
+		                    <td class="text-center" name="1" align="center" valign="baseline">
+		                    <br/>
+		                    <strong>____________________</strong>
+		                    <br/>
+		                    <strong>توقيع المحاسب</strong>
+		                    </td>
+
+	                    </tr>
+                    </tbody>
+	            </table>
+
+                    </div>
+                    </t>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    <template id="packing_header_diff">
+
+	<div class="header">
+            <div class="row">
+                <div class="col-3 mb4">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 65px;" alt="Logo"/>
+                </div>
+                <div class="col-9 text-right" style="margin-top:22px;" t-field="company.report_header" name="moto"/>
+            <div t-if="company.logo or company.report_header" class="row zero_min_height">
+                <div class="col-12">
+                    <div style="border-bottom: 1px solid black;"/>
+                </div>
+            </div>
+                <div class="col-6" style="position:relative; left:30px" name="company_address">
+                    <div style="font-weight:bold" t-field="company.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: true}"/>
+                </div>
+            </div>
+        </div>
+	</template>
+
+</odoo>
