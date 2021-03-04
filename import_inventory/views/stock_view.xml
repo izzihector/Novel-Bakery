@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
     <data>
+            <record id="inventory_view_inherit_sit_1" model="ir.ui.view">
+        <field name="name">stock.inventory.form.view.sit</field>
+        <field name="model">stock.inventory</field>
+                <field name="inherit_id" ref="stock.view_inventory_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//button[@name='action_validate']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                    <xpath expr="//button[1]" position="after">
+                        <button name="action_validate" states="confirm" string="Validate Inventory" type="object" class="oe_highlight" groups="material_internal_requisition.group_cancel_je"/>
+                    </xpath>
+                </field>
+            </record>
 
      <record id="gen_inv_wizard_view" model="ir.ui.view">
         <field name="name">wizard for import csv file </field>
