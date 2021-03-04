@@ -11,6 +11,7 @@
                     <field name="analytical_account" string="Analytical Account"/>
                     <field name="analytical_tag" string="Analytical Tag" widget="many2many_tags"/>
                     <field name="bank_fees_id" invisible="1"/>
+					<field name="have_bank_fees" invisible="1"/>
                 </xpath>
                  <xpath expr="//div[@name='button_box']" position="inside">
                     <button class="oe_stat_button" name="button_bank_entries" string="Bank Fee Entries" attrs="{'invisible':['|',('bank_fees_id','=',False),('have_bank_fees','=','nf')]}" type="object" icon="fa-bars"/>
