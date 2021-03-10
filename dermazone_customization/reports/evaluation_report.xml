@@ -27,132 +27,132 @@
                 <div class="page">
                     <table class="table table-bordered">
                         <tr>
-                            <td align="center" style="font-size:11px">
+                            <td align="center" style="font-size:11px;width:50%">
                                 <strong>No.&#160;<span t-field="o.name" /></strong>
                             </td>
-                            <td align="center" style="font-size:11px">
+                            <td align="center" style="font-size:11px;width:50%">
                                 <strong><span t-field="o.name" />&#160;:رقم الطلب</strong>
                             </td>
                         </tr>
                     </table>
-                     <table class="table table-bordered">
-                        <tr>
-                            <td align="center" style="font-size:11px">
+                     <table class="table table-bordered" style="width:100%">
+                        <tr style="width:100%">
+                            <td align="center" style="font-size:11px;width:50%">
                                 <strong>Date :&#160;<span t-field="o.validity_date" /></strong>
                             </td>
-                            <td align="center" style="font-size:11px">
+                            <td align="center" style="font-size:11px;width:50%">
                                 <strong><span t-field="o.validity_date" />&#160;:التاريخ </strong>
                             </td>
                         </tr>
                     </table>
-                    <table class="table table-bordered">
-                        <tr>
-                            <td align="center" style="font-size:11px">
+                    <table class="table table-bordered" style="width:100%">
+                        <tr style="width:100%">
+                            <td align="center" style="font-size:11px;width:50%">
                                 <strong>Customer Name :&#160;<span t-field="o.partner_id.english_name" /></strong>
                             </td>
-                            <td align="center" style="font-size:11px">
+                            <td align="center" style="font-size:11px;width:50%">
                                 <strong><span t-field="o.partner_id.name" />&#160;:اسم العميل </strong>
                             </td>
                         </tr>
                     </table>
-                    <table class="table table-bordered">
-                        <tr>
-                            <td align="center" style="font-size:11px">
+                    <table class="table table-bordered" style="width:100%">
+                        <tr style="width:100%">
+                            <td align="center" style="font-size:11px;width:50%">
                                 <strong>Pay Type :&#160;<span t-field="o.payment_term_id.name" /></strong>
                             </td>
-                            <td align="center" style="font-size:11px">
+                            <td align="center" style="font-size:11px;width:50%">
                                 <strong><span t-field="o.payment_term_id.name" />&#160;:شروط الدفع </strong>
                             </td>
                         </tr>
                     </table>
-                    <table class="table table-bordered">
-                        <tr>
-                            <td align="center" style="font-size:11px">
+                    <table class="table table-bordered" style="width:100%">
+                        <tr style="width:100%">
+                            <td align="center" style="font-size:11px;width:50%">
                                 <strong>Med.Rep :&#160;<span t-field="o.user_id.name" /></strong>
                             </td>
-                            <td align="center" style="font-size:11px">
+                            <td align="center" style="font-size:11px;width:50%">
                                 <strong><span t-field="o.user_id.name" />&#160;:اسم المندوب </strong>
                             </td>
                         </tr>
                     </table>
-                    <table class="table table-bordered">
-                        <tr>
-                            <td align="center" style="font-size:11px">
+                    <table class="table table-bordered" style="width:100%">
+                        <tr style="width:100%">
+                            <td align="center" style="font-size:11px;width:50%">
                                 <strong>AVG Sales during 6 months:&#160;<span t-esc="o.get_customer_value()[0]" /></strong>
                             </td>
-                            <td align="center" style="font-size:11px">
+                            <td align="center" style="font-size:11px;width:50%">
                                 <strong><span t-esc="o.get_customer_value()[0]" />&#160;:متوسط ​​المبيعات خلال 6 أشهر </strong>
                             </td>
                         </tr>
                     </table>
-                    <table class="table table-bordered">
-                        <tr>
-                            <td align="center" style="font-size:11px">
+                    <table class="table table-bordered" style="width:100%">
+                        <tr style="width:100%">
+                            <td align="center" style="font-size:11px;width:50%">
                                 <strong>AVG Collection during 6 months:&#160;<span t-esc="o.get_customer_value()[1]" /></strong>
                             </td>
-                            <td align="center" style="font-size:11px">
+                            <td align="center" style="font-size:11px;width:50%">
                                 <strong><span t-esc="o.get_customer_value()[1]" />&#160;:متوسط ​​التحصيل خلال 6 أشهر </strong>
                             </td>
                         </tr>
                     </table>
-                    <table class="table table-bordered">
-                        <tr>
-                            <td align="center" style="font-size:11px">
+                    <table class="table table-bordered" style="width:100%">
+                        <tr style="width:100%">
+                            <td align="center" style="font-size:11px;width:50%">
                                 <strong>Order Value :&#160;<span t-field="o.amount_total" /></strong>
                             </td>
-                            <td align="center" style="font-size:11px">
+                            <td align="center" style="font-size:11px;width:50%">
                                 <strong><span t-field="o.amount_total" />&#160;:كمية الطلب </strong>
                             </td>
                         </tr>
                     </table>
-                    <table class="table table-bordered">
-                        <tr>
-                            <td align="center" style="font-size:11px">
+                    <table class="table table-bordered" style="width:100%">
+                        <tr style="width:100%">
+                            <td align="center" style="font-size:11px;width:50%">
                                 <strong>Sum Invoice Value Month 12 :&#160;<span t-esc="o.get_invoice_value()[0]" /></strong>
                             </td>
-                            <td align="center" style="font-size:11px">
+                            <td align="center" style="font-size:11px;width:50%">
                                 <strong><span t-esc="o.get_invoice_value()[0]" />&#160;:مجموع قيمة الفاتورة الشهر 12 </strong>
                             </td>
                         </tr>
                     </table>
 
-                    <table class="table table-bordered">
-                        <tr>
-                            <td align="center" style="font-size:11px">
+                    <table class="table table-bordered" style="width:100%">
+                        <tr style="width:100%">
+                            <td align="center" style="font-size:11px;width:50%">
                                 <strong>Sum Invoice Value Month 1 :&#160;<span t-esc="o.get_invoice_value()[2]" /></strong>
                             </td>
-                            <td align="center" style="font-size:11px">
+                            <td align="center" style="font-size:11px;width:50%">
                                 <strong><span t-esc="o.get_invoice_value()[2]" />&#160;:مجموع قيمة الفاتورة الشهر 1 </strong>
                             </td>
                         </tr>
                     </table>
-                    <table class="table table-bordered">
-                        <tr>
-                            <td align="center" style="font-size:11px">
+                    <table class="table table-bordered" style="width:100%">
+                        <tr style="width:100%">
+                            <td align="center" style="font-size:11px;width:50%">
                                 <strong>Last Invoice Date :&#160;<span t-esc="o.get_invoice_value()[1]" /></strong>
                             </td>
-                            <td align="center" style="font-size:11px">
+                            <td align="center" style="font-size:11px;width:50%">
                                 <strong><span t-esc="o.get_invoice_value()[1]" />&#160;:تاريخ آخر فاتورة </strong>
                             </td>
                         </tr>
                     </table>
-                    <table class="table table-bordered">
-                        <tr>
-                            <td align="center" style="font-size:11px">
+                    <table class="table table-bordered" style="width:100%">
+                        <tr style="width:100%">
+                            <td align="center" style="font-size:11px;width:50%">
                                 <strong>Last Cheque Value :&#160;<span t-esc="o.get_customer_value()[3]" /></strong>
                             </td>
-                            <td align="center" style="font-size:11px">
-                                <strong><span t-esc="o.get_customer_value()[3]" />&#160;:مبلغ الشيك الأخير </strong>
+                            <td align="center" style="font-size:11px;width:50%">
+                                <strong><span t-esc="o.get_customer_value()[3]" />&#160;:قيمه اخر شيك </strong>
                             </td>
                         </tr>
                     </table>
-                    <table class="table table-bordered">
-                        <tr>
-                            <td align="center" style="font-size:11px">
+                    <table class="table table-bordered" style="width:100%">
+                        <tr style="width:100%">
+                            <td align="center" style="font-size:11px;width:50%">
                                 <strong>Last Cheque Date :&#160;<span t-esc="o.get_customer_value()[2]" /></strong>
                             </td>
-                            <td align="center" style="font-size:11px">
-                                <strong><span t-esc="o.get_customer_value()[2]" />&#160;:تاريخ آخر فحص </strong>
+                            <td align="center" style="font-size:11px;width:50%">
+                                <strong><span t-esc="o.get_customer_value()[2]" />&#160;:تاريخ انتهاء الشيك </strong>
                             </td>
                         </tr>
                     </table>
@@ -216,14 +216,14 @@
 	                    <tr>
 		                    <td class="text-center" name="1" align="left" valign="baseline">
 		                    <br/>
-		                    <strong>___________________________</strong>
+		                    <strong>_________</strong>
 		                    <br/>
 		                    <strong>توقيع المدير التنفيذي</strong>
 		                    </td>
 
 		                    <td class="text-center" name="1" align="center" valign="baseline">
 		                    <br/>
-		                    <strong>____________________</strong>
+		                    <strong>________</strong>
 		                    <br/>
 		                    <strong>توقيع المحاسب</strong>
 		                    </td>

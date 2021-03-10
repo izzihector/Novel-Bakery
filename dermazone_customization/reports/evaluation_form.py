@@ -7,11 +7,13 @@ class InheritSaleOrders(models.Model):
 
     @api.multi
     def _action_confirm(self):
-        for rec in self.picking_ids[0]:
-            for record in rec.move_ids_without_package:
-                for line in self.order_line:
-                    if record.product_id == line.product_id:
-                        record.product_uom_qty = line.product_uom_qty + line.bonus_qty
+        for rec in self.picking_ids:
+            if rec.state != 'cancel':
+                for record in rec.move_ids_without_package:
+                    for line in self.order_line:
+                        if record.product_id == line.product_id:
+                            record.product_uom_qty = line.product_uom_qty + line.bonus_qty
+                            record.reserved_availability = line.product_uom_qty + line.bonus_qty
         res = super(InheritSaleOrders,self)._action_confirm()
         return res
 

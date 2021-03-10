@@ -9,6 +9,12 @@ class InheritSaleOrderLines(models.Model):
     bonus_qty = fields.Float()
 
     @api.multi
+    @api.onchange('product_id')
+    def product_id_change(self):
+        super(InheritSaleOrderLines, self).product_id_change()
+        self.lot_number = False
+
+    @api.multi
     def _prepare_invoice_line(self, qty):
         """
         Prepare the dict of values to create the new invoice line for a sales order line.
@@ -69,14 +75,25 @@ class InheritInvoiceLines(models.Model):
     def change_lot_number(self):
         lot_list = []
         if self.product_id:
-            lots = self.env['stock.production.lot'].search([('product_id','=',self.product_id.id)])
+            lots = self.env['stock.production.lot'].search([('product_id','=',self.product_id.id),('product_qty','>',0)])
             for rec in lots:
                 lot_list.append(rec.id)
         return {'domain': {'lot_number': [('id', 'in',lot_list)]}}
 
 
-class InheritMoveLines(models.Model):
-    _inherit = 'stock.move.line'
+class StockLotProduction(models.Model):
+    _inherit = 'stock.production.lot'
 
-    lot_id = fields.Many2one('stock.production.lot', 'Lot/Serial Number')
-    product_stock = fields.Float(related='lot_id.product_qty')
+    production_date = fields.Datetime('Production Date')
+
+    @api.multi
+    def name_get(self):
+        result = []
+        for record in self:
+            name = ''
+            if record.name and record.use_date and record.product_qty:
+                name = str(record.name)+" [Exp("+str(record.use_date)+ "),Stock("+str(record.product_qty)+" "+str(record.product_uom_id.name)+")]"
+            else:
+                record.name = name
+            result.append((record.id, name))
+        return result

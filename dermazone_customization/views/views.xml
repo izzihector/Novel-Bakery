@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+
         <record id="res_partner_report_inherit" model="ir.ui.view">
             <field name="name">res.partner.inherit.view.one</field>
             <field name="model">res.partner</field>
@@ -44,8 +45,22 @@
             <field name="model">stock.move.line</field>
             <field name="inherit_id" ref="stock.view_stock_move_line_operation_tree"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='lot_id']" position="after">
-                        <field name="product_stock" string="Stock" />
+                <xpath expr="//field[@name='product_uom_qty']" position="before">
+                    <!--<field name="expiry_date" string="Expiry Date" invisible="not context.get('show_lots_m2o')"/>
+                    <field name="product_stock" string="Stock" invisible="not context.get('show_lots_m2o')"/>-->
+                    <field name="expiry_date_input" string="Expiry Date" invisible="not context.get('show_lots_text')"/>
+                    <field name="production_date_input" string="Production Date" invisible="not context.get('show_lots_text')"/>
+                </xpath>
+            </field>
+        </record>
+
+         <record id="production_view_lot_inherit" model="ir.ui.view">
+            <field name="name">view.lot.production.lot.inherit</field>
+            <field name="model">stock.production.lot</field>
+            <field name="inherit_id" ref="product_expiry.view_move_form_expiry"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='use_date']" position="after">
+                    <field name="production_date" />
                 </xpath>
             </field>
         </record>
