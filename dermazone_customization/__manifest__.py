@@ -8,7 +8,7 @@
     'author': "SIT & Think Digital",
     'website': "sitco.odoo.com",
     'description': "",
-    'depends': ['base','sale','account','product_expiry'
+    'depends': ['base','sale','account','product_expiry','purchase'
     ],
     'data': [
         'views/views.xml',

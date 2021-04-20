@@ -1,12 +1,50 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
+class InheritSaleOrder(models.Model):
+    _inherit = "sale.order"
+
+    sale_representative = fields.Many2one('res.users', 'Sales Representative', ondelete='restrict', required=True)
+
+    @api.multi
+    def _prepare_invoice(self):
+        """
+        Prepare the dict of values to create the new invoice for a sales order. This method may be
+        overridden to implement custom invoice generation (making sure to call super() to establish
+        a clean extension chain).
+        """
+        self.ensure_one()
+        journal_id = self.env['account.invoice'].default_get(['journal_id'])['journal_id']
+        if not journal_id:
+            raise UserError(_('Please define an accounting sales journal for this company.'))
+        invoice_vals = {
+            'name': self.client_order_ref or '',
+            'origin': self.name,
+            'type': 'out_invoice',
+            'account_id': self.partner_invoice_id.property_account_receivable_id.id,
+            'partner_id': self.partner_invoice_id.id,
+            'partner_shipping_id': self.partner_shipping_id.id,
+            'journal_id': journal_id,
+            'currency_id': self.pricelist_id.currency_id.id,
+            'comment': self.note,
+            'payment_term_id': self.payment_term_id.id,
+            'fiscal_position_id': self.fiscal_position_id.id or self.partner_invoice_id.property_account_position_id.id,
+            'company_id': self.company_id.id,
+            'user_id': self.user_id and self.user_id.id,
+            'team_id': self.team_id.id,
+            'sale_representative': self.sale_representative.id,
+            'transaction_ids': [(6, 0, self.transaction_ids.ids)],
+        }
+        return invoice_vals
+
+
 class InheritSaleOrderLines(models.Model):
     _inherit = "sale.order.line"
 
     lot_number = fields.Many2one('stock.production.lot', change_default=True, ondelete='restrict')
     expiry_date = fields.Datetime(related='lot_number.use_date')
     bonus_qty = fields.Float()
+    sale_representative_id = fields.Many2one(related='order_id.sale_representative', store=True, string='Sales Representative', readonly=True)
 
     @api.multi
     @api.onchange('product_id')
@@ -62,6 +100,11 @@ class InheritSaleOrderLines(models.Model):
             for rec in lots:
                 lot_list.append(rec.id)
         return {'domain': {'lot_number': [('id', 'in',lot_list)]}}
+
+class InheritAccountInvoice(models.Model):
+    _inherit = "account.invoice"
+
+    sale_representative = fields.Many2one('res.users', 'Sales Representative', ondelete='restrict')
 
 
 class InheritInvoiceLines(models.Model):

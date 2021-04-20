@@ -167,6 +167,7 @@
                                 <th class="text-left">Expiry Date<br/>تاريخ الانتهاء</th>
                                 <th class="text-left">Source Document<br/>مصدر وثائق</th>
                                 <th class="text-center">Quantity<br/>الكمية</th>
+                                <th class="text-center">Bonus Quantity<br/>كمية المكافأة</th>
                                 <th class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">Unit Price<br/>سعر الوحدة</th>
                                 <th t-if="display_discount" class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">Disc(%)<br/>خصم</th>
                                 <th class="text-left {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">Tax(%)<br/>الضريبة</th>
@@ -179,13 +180,15 @@
                                 <td class="text-center"><span t-esc="i"/></td>
 		                        <td class="text-center"><span t-field="l.product_id.code"/></td>
 		                        <td class="text-left"><span t-field="l.name"/></td>
-                                <td class="text-left"><span t-field="l.lot_number"/></td>
-                                <td class="text-left"><span t-field="l.expire_date"/></td>
+                                <td class="text-left"><span t-field="l.lot_number.name"/></td>
+                                <td class="text-left"><span t-field="l.expire_date" t-options='{"widget": "date"}'/></td>
                                 <td class="text-left"><span t-field="l.origin"/></td>
                                 <td class="text-center">
                                     <span t-field="l.quantity"/>
+                                    
                                     <span t-field="l.uom_id" groups="product.group_uom"/>
                                 </td>
+                                <td class="text-center"><span t-field="l.bonus_qty"/></td>
                                 <td class="text-center {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
                                     <span t-field="l.price_unit"/>
                                 </td>
@@ -518,6 +521,7 @@ I hereby certify that the above products are in good condition in accordance wit
                                 <th class="text-left">Expiry Date<br/>تاريخ الانتهاء</th>
                                 <th class="text-left">Source Document<br/>مصدر وثائق</th>
                                 <th class="text-center">Quantity<br/>الكمية</th>
+								<th class="text-center">Bonus Quantity<br/>كمية المكافأة</th>
                                 <th class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">Unit Price<br/>سعر الوحدة</th>
                                 <th t-if="display_discount" class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">Disc(%)<br/>خصم</th>
                                 <th class="text-left {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">Tax(%)<br/>الضريبة</th>
@@ -530,13 +534,14 @@ I hereby certify that the above products are in good condition in accordance wit
                                 <td class="text-center"><span t-esc="i"/></td>
 		                        <td class="text-center"><span t-field="l.product_id.code"/></td>
 		                        <td class="text-left"><span t-field="l.name"/></td>
-                                <td class="text-left"><span t-field="l.lot_number"/></td>
-                                <td class="text-left"><span t-field="l.expire_date"/></td>
+                                <td class="text-left"><span t-field="l.lot_number.name"/></td>
+                                <td class="text-left"><span t-field="l.expire_date" t-options='{"widget": "date"}'/></td>
                                 <td class="text-left"><span t-field="l.origin"/></td>
                                 <td class="text-center">
                                     <span t-field="l.quantity"/>
                                     <span t-field="l.uom_id" groups="product.group_uom"/>
                                 </td>
+								<td class="text-center"><span t-field="l.bonus_qty"/></td>
                                 <td class="text-center {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
                                     <span t-field="l.price_unit"/>
                                 </td>
