@@ -15,7 +15,6 @@
     ],
     'data': [
         'security/security.xml',
-        'views/cron_view.xml',
         'views/model_view.xml',
     ],
 }

@@ -57,17 +57,6 @@
             </field>
         </record>
 
-         <record model="ir.ui.view" id="view_stock_form_inherit_ga">
-            <field name="name">stock.inherit.1</field>
-            <field name="model">stock.picking</field>
-            <field name="inherit_id" ref="stock.view_picking_form"/>
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='origin']" position="after">
-                    <field name="current_currency_rate" groups="custom_payment.allow_update_rate_group"/>
-                    <button name="update_currency_rate" type='object' class="btn-primary" string="Update Rate" groups="custom_payment.allow_update_rate_group"/>
-                </xpath>
-            </field>
-         </record>
               <record id="product_move_view_inherit_sit" model="ir.ui.view">
         <field name="name">product.move.view.inherit</field>
         <field name="model">stock.move.line</field>

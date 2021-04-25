@@ -18,6 +18,22 @@ class InheritPayment(models.Model):
     analytical_tag = fields.Many2many('account.analytic.tag')
 
     @api.multi
+    def cancel_bank_fees(self):
+        for rec in self:
+            if rec.bank_fees_id == True:
+                bank_moves = self.env['account.move.line'].search([('bank_payment_id', '=', rec.id)])
+                if bank_moves[0].move_id.state != 'draft':
+                    bank_moves[0].move_id.button_cancel()
+                bank_moves[0].move_id.unlink()
+                rec.bank_fees_id = False
+
+    @api.multi
+    def cancel(self):
+        self.cancel_bank_fees()
+        res = super(InheritPayment, self).cancel()
+        return res
+
+    @api.multi
     def post(self):
         """ Create the journal items for the payment and update the payment's state to 'posted'.
             A journal entry is created containing an item in the source liquidity account (selected journal's default_debit or default_credit)
@@ -374,27 +390,7 @@ class InheritMoveLine(models.Model):
     _inherit = 'account.move.line'
     bank_payment_id = fields.Integer()
 
-
-class InheritPicking(models.Model):
-    _inherit = 'stock.picking'
-
-    current_currency_rate = fields.Float('Current Currency Rate', digits=(16,5))
-    
-    @api.multi
-    def update_currency_rate(self):
-        if self.current_currency_rate:
-            if self.origin:
-                po = self.env['purchase.order'].search([('name','=',self.origin)])
-                currency_rec = po.currency_id.rate_ids.filtered(
-                    lambda x: x.name == fields.Date.today())
-
-                if currency_rec:
-                    currency_rec.rate = 1/self.current_currency_rate
-                else:
-                    raise ValidationError(_('The Currency %s is not updated as of today, please update it first.')%(po.currency_id.name))
-
-
-class InheritMoveLine(models.Model):
+class InheritMoveLineStock(models.Model):
     _inherit = "stock.move.line"
     partner_name = fields.Many2one('res.partner', compute='get_partner_name')
     ref = fields.Char(compute='get_partner_name')
