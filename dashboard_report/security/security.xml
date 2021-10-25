@@ -16,6 +16,5 @@
 			<field name="name">Dashboard Security</field>
 			<field name="category_id" ref="dashboard_report.dashboard_coo" />
 		</record>
-
     </data>
 </odoo>

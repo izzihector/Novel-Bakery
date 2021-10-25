@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+view_hr_deductions,hr.deductions,model_hr_deductions,hr.group_hr_manager,1,1,1,1
+view_hr_deductions,hr.deductions,model_hr_deductions,base.group_user,1,1,1,1
+view_employee_status,employee.status,model_employee_status,hr.group_hr_manager,1,1,1,1
+view_employee_status,employee.status,model_employee_status,base.group_user,1,1,1,1
+view_hr_sponsors,hr.sponsors,model_hr_sponsors,hr.group_hr_manager,1,1,1,1
+view_hr_sponsors,hr.sponsors,model_hr_sponsors,base.group_user,1,1,1,1

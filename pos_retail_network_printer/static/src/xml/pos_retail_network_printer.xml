@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="Chrome">
+        <t t-jquery="div[class*='pos']" t-operation="before">
+            <div class='pos-receipts' style="width: 320px; font-family: 'Anonymous Pro';">
+            </div>
+        </t>
+    </t>
+
+    <t t-name="printer_network_widget">
+        <div class="oe_status js_synch">
+            <span class='js_msg oe_hidden'>0</span>
+            <div class="js_connected oe_icon oe_green">
+                <i class='fa fa-fw fa-print' role="img" aria-label="Printer Network Status" title="Printer Online"></i>
+            </div>
+            <div class="js_disconnected oe_icon oe_red blink oe_hidden">
+                <i class='fa fa-fw fa-print' role="img" aria-label="Printer Network Status" title="Printer Offline"></i>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="popup_printers_network">
+        <div class="modal-dialog">
+            <div class="popup popup-selection">
+                <div class="card">
+                    <h4 class="card-title">
+                        <t t-esc=" widget.options.title || 'Printers Network' " />
+                    </h4>
+                    <div class="card-content">
+                    </div>
+                    <div class="form-footer text-center">
+                        <div class="btn btn-danger pull-right cancel">
+                             Close
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="printers_network">
+        <t t-if="epson_printers" >
+            <div class='selection scrollable-y touch-scrollable'>
+                <t t-set="number" t-value="1"/>
+                <t t-foreach="epson_printers || []" t-as="epson_printer">
+                    <div class="selection-item" t-att-data-id="epson_printer.id">
+                        <t t-if="epson_printer['state'] == 'Online'">
+                            <span style="color: rgb(94, 185, 55); font-size: 14px">
+                                <i class="fa fa-print"/>
+                            </span>
+                        </t>
+                        <t t-if="epson_printer['state'] != 'Online'">
+                            <span style="color: red; font-size: 14px">
+                                <i class="fa fa-print oe_red"/>
+                            </span>
+                        </t>
+                        <t t-esc="epson_printer['ip']"/>
+                        with State :
+                        <t t-if="epson_printer['state'] == 'Online'">
+                            <span style="color: rgb(94, 185, 55); font-size: 14px">
+                                <t t-esc="epson_printer['state']"/>
+                            </span>
+                        </t>
+                        <t t-if="epson_printer['state'] != 'Online'">
+                            <span style="color: red; font-size: 14px">
+                                <t t-esc="epson_printer['state']"/>
+                            </span>
+                        </t>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </t>
+
+</templates>

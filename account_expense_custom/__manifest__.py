@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Account Expense Custom",
-    "summary": "This module Adds functionality to manage Expenses based on Configurations",
-    "version": "12.0.7.0.0",
+    "summary": "This module Adds functionality to manage Expenses based on Configuration.",
+    "version": "12.0.7.2.0",
     "category": "Accounting",
     "license": "AGPL-3",
     "application": True,

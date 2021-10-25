@@ -91,7 +91,7 @@
 
         <menuitem id="menu_sale_form_action_dashboard" parent="base.menu_board_root" name="Sales" sequence="20"/>
         <menuitem id="menu_sale_reports_dashboard" parent="menu_sale_form_action_dashboard" name="Matrix Reports" sequence="10"/>
-        <menuitem id="menu_sale_details_dashboard" action="action_report_pos_order_all_dashboard" parent="menu_sale_reports_dashboard" name="POS Sales Details" sequence="10"/>
+        <menuitem id="menu_sale_details_dashboard" action="action_report_pos_order_all_dashboard" parent="menu_sale_reports_dashboard" name="Sales Details" sequence="10"/>
 
         <record id="action_report_pos_order_category_dashboard" model="ir.actions.act_window">
             <field name="name">Sales Details</field>
@@ -102,7 +102,7 @@
             <field name="context">{u'pivot_row_groupby': [u'pos_categ_id'], u'pivot_column_groupby': [u'date:month'], u'group_by': [u'pos_categ_id'], u'pivot_measures': [u'price_total']}</field>
         </record>
 
-        <menuitem id="menu_sale_details_category_dashboard" action="action_report_pos_order_category_dashboard" parent="menu_sale_reports_dashboard" name="POS Sales by Category" sequence="20"/>
+        <menuitem id="menu_sale_details_category_dashboard" action="action_report_pos_order_category_dashboard" parent="menu_sale_reports_dashboard" name="Sales by Category" sequence="20"/>
 
         <record id="action_report_pos_order_product_dashboard" model="ir.actions.act_window">
             <field name="name">Product Details</field>
@@ -113,7 +113,7 @@
             <field name="context">{u'pivot_row_groupby': [u'date:month'], u'pivot_column_groupby': [u'team_id'], u'group_by': [u'date:month'], u'pivot_measures': [u'price_subtotal', u'price_total']}</field>
         </record>
 
-        <menuitem id="menu_sale_details_product_dashboard" action="action_report_pos_order_product_dashboard" parent="menu_sale_reports_dashboard" name="General Sales by Product" sequence="25"/>
+        <menuitem id="menu_sale_details_product_dashboard" action="action_report_pos_order_product_dashboard" parent="menu_sale_reports_dashboard" name="Sales by Product" sequence="25"/>
 
         <record id="action_report_pos_order_category_graph_dashboard" model="ir.actions.act_window">
             <field name="name">Sales Details</field>
@@ -125,7 +125,7 @@
         </record>
 
         <menuitem id="menu_sale_reports_graph_dashboard" parent="menu_sale_form_action_dashboard" name="Diagram Reports" sequence="20"/>
-        <menuitem id="menu_sale_details_graph_dashboard" action="action_report_pos_order_category_graph_dashboard" parent="menu_sale_reports_graph_dashboard" name="POS Sales by Category" sequence="30"/>
+        <menuitem id="menu_sale_details_graph_dashboard" action="action_report_pos_order_category_graph_dashboard" parent="menu_sale_reports_graph_dashboard" name="Sales by Category" sequence="30"/>
 
         <record id="action_report_pos_order_month_graph_dashboard" model="ir.actions.act_window">
             <field name="name">Sales Details</field>
@@ -136,7 +136,7 @@
             <field name="context">{u'graph_mode': u'bar', u'graph_groupbys': [u'date:month'], u'group_by': [u'date:month'], u'graph_measure': u'price_total'}</field>
         </record>
 
-        <menuitem id="menu_sale_details_graph_month_dashboard" action="action_report_pos_order_month_graph_dashboard" parent="menu_sale_reports_graph_dashboard" name="POS Sales by Month" sequence="40"/>
+        <menuitem id="menu_sale_details_graph_month_dashboard" action="action_report_pos_order_month_graph_dashboard" parent="menu_sale_reports_graph_dashboard" name="Sales by Month" sequence="40"/>
 
         <record id="action_account_moves_inherit" model="ir.actions.act_window">
             <field name="name">Sales by Analytical Account</field>
@@ -146,7 +146,7 @@
             <field name="context">{u'pivot_row_groupby': [u'date:month', u'journal_id'], u'pivot_column_groupby': [u'analytic_account_id'], u'pivot_measures': [u'credit'], 'search_default_account_id':860}</field>
         </record>
 
-<!--        <menuitem id="menu_sale_details_analytic_dashboard" action="action_account_moves_inherit" parent="menu_sale_reports_dashboard" name="Sales by Analytic Account" sequence="26"/>   -->
+        <menuitem id="menu_sale_details_analytic_dashboard" action="action_account_moves_inherit" parent="menu_sale_reports_dashboard" name="Sales by Analytic Account" sequence="26"/>
 
 
 <!-- Finance Reports -->

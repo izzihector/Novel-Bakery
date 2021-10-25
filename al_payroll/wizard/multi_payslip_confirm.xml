@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Multi Payslip Wizard -->
+
+        <record id="multi_payslip_hrapproval_form_wizard" model="ir.ui.view">
+            <field name="name">multi.payslip.hrapproval.form.wizard</field>
+            <field name="model">multi.hr.payslip.wizard</field>
+            <field name="arch" type="xml">
+                <form string="HR Approval Payslip(s)">
+                    <p class="oe_grey">
+                        Once draft payslip(s) are approved by HR, you will not be able
+                        to modify them.
+                    </p>
+                    <footer>
+                        <button name="multi_payslip_hr" string="HR Approval" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_multi_payslip_hrapproval_wizard" model="ir.actions.act_window">
+            <field name="name">Multi Payslips HR Approval</field>
+            <field name="res_model">multi.hr.payslip.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <act_window id="action_multiple_hrapproval_payslip"
+            multi="True"
+            key2="client_action_multi2" 
+            name="HR Approval Payslip(s)"
+            res_model="multi.hr.payslip.wizard" 
+            src_model="hr.payslip"
+            view_mode="form" 
+            target="new" 
+            view_type="form"/>
+
+
+        <record id="multi_payslip_finance_approval_form_wizard" model="ir.ui.view">
+            <field name="name">multi.payslip.finance.approval.form.wizard</field>
+            <field name="model">multi.finance.payslip.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Finance Approval Payslip(s)">
+                    <p class="oe_grey">
+                        Once HR payslip(s) are approved by Finance, you will not be able
+                        to modify them.
+                    </p>
+                    <footer>
+                        <button name="multi_payslip_finance" string="Finance Approval" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_multi_payslip_finance_approval_wizard" model="ir.actions.act_window">
+            <field name="name">Multi Payslips Finance Approval</field>
+            <field name="res_model">multi.finance.payslip.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <act_window id="action_multiple_finance_approval_payslip"
+            multi="True"
+            key2="client_action_multi2" 
+            name="Finance Approval Payslip(s)"
+            res_model="multi.finance.payslip.wizard" 
+            src_model="hr.payslip"
+            view_mode="form" 
+            target="new" 
+            view_type="form"/>
+
+
+        <record id="multi_payslip_confirm_form_wizard" model="ir.ui.view">
+            <field name="name">multi.payslip.wizard.form.wizard</field>
+            <field name="model">multi.payslip.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Confirm Payslip(s)">
+                    <p class="oe_grey">
+                        Once Finance Approved payslip(s) are confirmed, you will not be able
+                        to modify them. The payslip(s) will receive a unique
+                        number and journal items will be created in your chart
+                        of accounts.
+                    </p>
+                    <footer>
+                        <button name="multi_payslip" string="Confirm" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_multi_payslip_confirm_wizard" model="ir.actions.act_window">
+            <field name="name">Multi Payslips Confirm</field>
+            <field name="res_model">multi.payslip.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <act_window id="action_multiple_hr_payslip"
+            multi="True"
+            key2="client_action_multi" 
+            name="Confirm Payslip(s)"
+            res_model="multi.payslip.wizard" 
+            src_model="hr.payslip"
+            view_mode="form" 
+            target="new" 
+            view_type="form"/>
+
+    </data>
+</odoo>

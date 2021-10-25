@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="hr_deductions_view_form" model="ir.ui.view">
+            <field name="name">hr.deductions.view.form</field>
+            <field name="model">hr.deductions</field>
+            <field name="arch" type="xml">
+                <form string="Deductions">
+                <header>
+                  <button name="action_deductions_submit" string="Submit" type="object" attrs="{'invisible':[('state','!=','draft')]}" class="oe_highlight o_expense_submit"/>
+                  <button name="action_deductions_approve" string="Approve" type="object" attrs="{'invisible':[('state','!=','submit')]}" class="oe_highlight o_expense_submit"/>
+                  <button name="action_deductions_refused" string="Refuse" type="object" attrs="{'invisible':[('state','!=','submit')]}" class="oe_highlight o_expense_submit"/>
+                  <button name="action_deductions_draft" string="Set to Draft" type="object" attrs="{'invisible':[('state','!=','refused')]}" class="oe_highlight o_expense_submit"/>
+                  <field name="state" widget="statusbar" statusbar_visible="draft,submit,approve,refused"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Deduction for Short Attendance"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="department_id"/>
+                            <field name="job_id"/>
+                            <field name="deduction_date"/>
+                            <field name="unit_amount" required="1" widget="monetary"/>
+                            <label for="quantity"/>
+                            <div>
+                                <field name="quantity" class="oe_inline"/>
+                            </div>
+                        </group><group>
+                            <field name="reference"/>
+                            <field name="date"/>
+                            <field name="manager_id"/>
+                            <field name="coach_id"/>
+                            <field name="rule_id" domain="[('category_id.name', 'ilike', 'Deduction')]"/>
+                        </group><group>
+                            <field name="total_amount" widget='monetary'/>
+                        </group>
+
+                    </group>
+                    <div>
+                        <field name="description" class="oe_inline" placeholder="Notes..."/>
+                    </div>
+                </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_deductions_tree" model="ir.ui.view">
+            <field name="name">hr.deductions.tree</field>
+            <field name="model">hr.deductions</field>
+            <field name="arch" type="xml">
+                <tree string="Deductions">
+                    <field name="deduction_date"/>
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="manager_id"/>
+                    <field name="total_amount" sum="Total Amount"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_hr_deductions">
+            <field name="name">Employee Deductions</field>
+            <field name="res_model">hr.deductions</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state', 'in', ('draft', 'submit', 'approve', 'refused'))]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Employee Deductions Form
+                </p>
+            </field>
+        </record>
+        <record id="view_deductions_filter" model="ir.ui.view">
+            <field name="name">hr.deductions.search</field>
+            <field name="model">hr.deductions</field>
+            <field name="arch" type="xml">
+                <search string="Deductions">
+                    <field name="name" string="Description" filter_domain="[('name','ilike',self)]"/>
+                    <field name="employee_id"/>
+                    <field name="manager_id"/>
+                    <field name="reference"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_manager" string="Manager" domain="[]" context="{'group_by':'manager_id'}"/>
+                        <filter name="group_employee" string="Employee" domain="[]" context="{'group_by':'employee_id'}"/>
+                        <filter name="group_department" string="Department" domain="[]" context="{'group_by':'department_id'}"/>
+                        <filter name="group_job" string="Job" domain="[]" context="{'group_by':'job_id'}"/>
+                    </group>
+                </search>
+             </field>
+         </record>
+
+        <menuitem id="menu_hr_deductionsx" name="Deductions" parent="hr.menu_hr_root" groups="hr.group_hr_manager" sequence="3"/>
+        <menuitem id="menu_hr_deductions" name="Deductions" parent="menu_hr_deductionsx" action="action_hr_deductions" groups="hr.group_hr_manager" sequence="19"/>
+
+    </data>
+</odoo>

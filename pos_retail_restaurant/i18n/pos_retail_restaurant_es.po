@@ -1,0 +1,410 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* pos_retail_restaurant
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-01-23 02:21+0000\n"
+"PO-Revision-Date: 2019-01-23 02:21+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: pos_retail_restaurant
+#: model:ir.model.fields,help:pos_retail_restaurant.field_pos_config_print_last_submit_order
+msgid "Allow cashiers reprint last submit order to kitchen"
+msgstr "Allow cashiers reprint last submit order to kitchen"
+
+#. module: pos_retail_restaurant
+#: model:ir.model.fields,help:pos_retail_restaurant.field_product_product_integration_kitchen
+#: model:ir.model.fields,help:pos_retail_restaurant.field_product_template_integration_kitchen
+msgid "Auto manufacturing when kitchen process product to DONE"
+msgstr "Auto manufacturing when kitchen process product to DONE"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_kitchen.xml:10
+#, python-format
+msgid "Back"
+msgstr "Back"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_waiter.xml:227
+#, python-format
+msgid "Bill to kitchen/bar"
+msgstr "Bill to kitchen/bar"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/core.xml:23
+#, python-format
+msgid "CANCELLED"
+msgstr "CANCELLED"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_waiter.xml:132
+#, python-format
+msgid "Cancel"
+msgstr "Cancel"
+
+#. module: pos_retail_restaurant
+#: selection:pos.config,screen_type:0
+msgid "Cashier"
+msgstr "Cashier"
+
+#. module: pos_retail_restaurant
+#: model:ir.model.fields,field_description:pos_retail_restaurant.field_pos_config_product_categ_ids
+msgid "Categories display"
+msgstr "Categories display"
+
+#. module: pos_retail_restaurant
+#: model:ir.model.fields,help:pos_retail_restaurant.field_pos_config_product_categ_ids
+msgid "Categories of product will display on kitchen/bar screen"
+msgstr "Categories of product will display on kitchen/bar screen"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_kitchen.xml:181
+#, python-format
+msgid "Confirm cancel"
+msgstr "Confirm cancel"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_kitchen.xml:158
+#, python-format
+msgid "Delivery"
+msgstr "Entregar"
+
+#. module: pos_retail_restaurant
+#: model:ir.model.fields,field_description:pos_retail_restaurant.field_pos_config_display_floor
+msgid "Display floors"
+msgstr "Display floors"
+
+#. module: pos_retail_restaurant
+#: model:ir.model.fields,help:pos_retail_restaurant.field_pos_config_display_floor
+msgid "Display floors on Kitchen/bar screen"
+msgstr "Display floors on Kitchen/bar screen"
+
+#. module: pos_retail_restaurant
+#: model:ir.model.fields,field_description:pos_retail_restaurant.field_pos_config_display_product_image
+msgid "Display product image"
+msgstr "Display product image"
+
+#. module: pos_retail_restaurant
+#: model:ir.model.fields,help:pos_retail_restaurant.field_pos_config_display_product_image
+msgid "Display product image on Kitchen/bar screen"
+msgstr "Display product image on Kitchen/bar screen"
+
+#. module: pos_retail_restaurant
+#: model:ir.model.fields,field_description:pos_retail_restaurant.field_pos_config_display_table
+msgid "Display tables"
+msgstr "Display tables"
+
+#. module: pos_retail_restaurant
+#: model:ir.model.fields,help:pos_retail_restaurant.field_pos_config_display_table
+msgid "Display tables on Kitchen/bar screen"
+msgstr "Display tables on Kitchen/bar screen"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_kitchen.xml:39
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_waiter.xml:108
+#, python-format
+msgid "Done"
+msgstr "Done"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_waiter.xml:145
+#, python-format
+msgid "Done all"
+msgstr "Done all"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_waiter.xml:113
+#, python-format
+msgid "Error"
+msgstr "Error"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_waiter.xml:178
+#, python-format
+msgid "Exit priority"
+msgstr "Exit priority"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_kitchen.xml:31
+#, python-format
+msgid "Floor"
+msgstr "Piso"
+
+#. module: pos_retail_restaurant
+#: model:ir.actions.act_window,name:pos_retail_restaurant.action_restaurant_table
+#: model:ir.ui.menu,name:pos_retail_restaurant.menu_action_restaurant_table
+msgid "Floor Tables"
+msgstr "Floor Tables"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_waiter.xml:253
+#, python-format
+msgid "Guests"
+msgstr "Guests"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_waiter.xml:167
+#, python-format
+msgid "High priority"
+msgstr "High priority"
+
+#. module: pos_retail_restaurant
+#: model:ir.model.fields,help:pos_retail_restaurant.field_pos_config_sync_between_waiters
+msgid "If checked, only sync between cashiers and kitchen/bar. Not sync between cashiers, waiters"
+msgstr "If checked, only sync between cashiers and kitchen/bar. Not sync between cashiers, waiters"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_waiter.xml:30
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_waiter.xml:59
+#, python-format
+msgid "In:"
+msgstr "In:"
+
+#. module: pos_retail_restaurant
+#: model:ir.model.fields,field_description:pos_retail_restaurant.field_product_product_integration_kitchen
+#: model:ir.model.fields,field_description:pos_retail_restaurant.field_product_template_integration_kitchen
+#: model:ir.ui.view,arch_db:pos_retail_restaurant.pos_retail_restaurant_product
+msgid "Integration Kitchen"
+msgstr "Integration Kitchen"
+
+#. module: pos_retail_restaurant
+#: selection:pos.config,screen_type:0
+msgid "Kitchen"
+msgstr "Kitchen"
+
+#. module: pos_retail_restaurant
+#: model:ir.ui.view,arch_db:pos_retail_restaurant.view_pos_config_syncing
+msgid "Kitchen/Bar"
+msgstr "Kitchen/Bar"
+
+#. module: pos_retail_restaurant
+#: selection:pos.config,screen_type:0
+msgid "Manager"
+msgstr "Manager"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/core.xml:45
+#, python-format
+msgid "NEW"
+msgstr "NEW"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/core.xml:33
+#: code:addons/pos_retail_restaurant/static/src/xml/core.xml:55
+#, python-format
+msgid "NOTE"
+msgstr "NOTE"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_kitchen.xml:37
+#, python-format
+msgid "Name"
+msgstr "Name"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_kitchen.xml:165
+#, python-format
+msgid "Not Enough Material"
+msgstr "Not Enough Material"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_waiter.xml:201
+#, python-format
+msgid "Note Order"
+msgstr "Note Order"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_kitchen.xml:41
+#, python-format
+msgid "Notes"
+msgstr "Notes"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_waiter.xml:240
+#, python-format
+msgid "Order"
+msgstr "Order"
+
+#. module: pos_retail_restaurant
+#: model:ir.model.fields,field_description:pos_retail_restaurant.field_pos_config_print_last_submit_order
+msgid "Print last order kitchen"
+msgstr "Print last order kitchen"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_waiter.xml:120
+#, python-format
+msgid "Priority"
+msgstr "Priority"
+
+#. module: pos_retail_restaurant
+#: model:ir.model,name:pos_retail_restaurant.model_product_template
+msgid "Product Template"
+msgstr "Product Template"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_kitchen.xml:173
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_waiter.xml:127
+#, python-format
+msgid "Put Back"
+msgstr "Put Back"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_waiter.xml:156
+#, python-format
+msgid "Re-Print last submit order"
+msgstr "Re-Print last submit order"
+
+#. module: pos_retail_restaurant
+#: model:ir.ui.view,arch_db:pos_retail_restaurant.view_restaurant_table_tree
+msgid "Restaurant Table"
+msgstr "Mesa del Restaurante"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_kitchen.xml:15
+#, python-format
+msgid "Search Product"
+msgstr "Search Product"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_waiter.xml:189
+#, python-format
+msgid "Send order to kitchen"
+msgstr "Send order to kitchen"
+
+#. module: pos_retail_restaurant
+#: model:ir.model.fields,field_description:pos_retail_restaurant.field_pos_config_screen_type
+msgid "Session Type"
+msgstr "Session Type"
+
+#. module: pos_retail_restaurant
+#: model:ir.model.fields,field_description:pos_retail_restaurant.field_pos_config_play_sound
+msgid "Sound"
+msgstr "Sound"
+
+#. module: pos_retail_restaurant
+#: model:ir.model.fields,help:pos_retail_restaurant.field_pos_config_play_sound
+msgid "Sound notify when new transaction coming"
+msgstr "Sound notify when new transaction coming"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_waiter.xml:214
+#, python-format
+msgid "Split Order"
+msgstr "Split Order"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_kitchen.xml:42
+#, python-format
+msgid "State"
+msgstr "Estado"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_waiter.xml:96
+#, python-format
+msgid "State:"
+msgstr "State:"
+
+#. module: pos_retail_restaurant
+#: model:ir.model.fields,field_description:pos_retail_restaurant.field_pos_config_sync_between_waiters
+msgid "Sync between waiters"
+msgstr "Sync between waiters"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_kitchen.xml:34
+#, python-format
+msgid "Table"
+msgstr "Table"
+
+#. module: pos_retail_restaurant
+#: model:ir.ui.view,arch_db:pos_retail_restaurant.pos_restaurant_kitchen_floor_form
+msgid "Tables"
+msgstr "Mesas"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_kitchen.xml:40
+#, python-format
+msgid "Tags"
+msgstr "Tags"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_kitchen.xml:36
+#, python-format
+msgid "Time"
+msgstr "Time"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_waiter.xml:266
+#, python-format
+msgid "Transfer order"
+msgstr "Transfer order"
+
+#. module: pos_retail_restaurant
+#: selection:pos.config,screen_type:0
+msgid "Waiter"
+msgstr "Waiter"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_kitchen.xml:38
+#, python-format
+msgid "Waiting"
+msgstr "Esperando"
+
+#. module: pos_retail_restaurant
+#: model:ir.model,name:pos_retail_restaurant.model_pos_config
+msgid "pos.config"
+msgstr "pos.config"
+
+#. module: pos_retail_restaurant
+#: model:ir.model,name:pos_retail_restaurant.model_restaurant_table
+msgid "restaurant.table"
+msgstr "restaurant.table"
+
+#. module: pos_retail_restaurant
+#. openerp-web
+#: code:addons/pos_retail_restaurant/static/src/xml/screen_kitchen.xml:123
+#, python-format
+msgid "with quantity :"
+msgstr "with quantity :"
+

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'Dashboard Custom Report(s)',
+    'name': 'Dashboard Custom Reports',
     'summary': """All Dashboard Custom reports for Management""",
     'author': "SIT & think digital",
     'website': "http://sitco.odoo.com/",

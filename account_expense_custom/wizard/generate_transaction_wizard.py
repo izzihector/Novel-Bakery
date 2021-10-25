@@ -24,7 +24,5 @@ class GenerateTransactionWizard(models.TransientModel):
             ('end_date', '<=', self.account_date),
             ('move_id', '=', False),
             ('expense_transaction_id.expense_nature', '=', self.expense_nature)
-        ], order='expense_transaction_id desc')
-        if amortization_lines:
-            amortization_lines.post_entry(journal_id=self.journal_id.id,
-                                          group_entry=self.group_journal_entries)
+        ])
+        amortization_lines.post_entry(journal_id=self.journal_id.id)

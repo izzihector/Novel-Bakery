@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    
+    <t t-name="kitchen_screen">
+        <div class="paylaterlist-screen clientlist-screen screen">
+            <div class="kitchen_screen">
+                <section class="top-content">
+                    <t t-if="widget.pos.config.screen_type and widget.pos.config.screen_type !='kitchen'">
+                        <span class='button back'>
+                            <i class='fa fa-angle-double-left'></i>
+                            Back
+                        </span>
+                    </t>
+                    <span class='searchbox search-line'>
+                        <input placeholder='Search Product'/>
+                        <span class='search-clear'></span>
+                    </span>
+                </section>
+                <section class="full-content">
+                    <div class='window'>
+                        <section class='subwindow'>
+                            <div class='subwindow-container'>
+                                <div class='subwindow-container-fix touch-scrollable scrollable-x scrollable-y chef-container'>
+                                    <div class='product-list lines-list' style="border-collapse: unset">
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </t>
+
+    <t t-name="kitchen_box">
+        <div t-attf-class="kitchen-box">
+            <span class="order-number">
+                <t t-if="order.sequence_number">
+                    <tr>
+                        Seq No.<t t-esc="order.sequence_number"/>
+                    </tr>
+                </t>
+                <t t-if="order.table">
+                    <tr>
+                        at <t t-esc="order.table"/>
+                    </tr>
+                </t>
+                <t t-if="order.floor">
+                    <tr>
+                        / <t t-esc="order.floor"/>
+                    </tr>
+                </t>
+            </span>
+            <span class="order-time">
+                Time: <t t-esc="order.time.hours"/>:
+                <t t-esc="order.time.minutes"/>
+                <t t-if="order.guest">
+                    # Guest: <t t-esc="order.guest"/>
+                </t>
+                <t t-if="order.guest_number">
+                    # Guest Number: <t t-esc="order.guest_number"/>
+                </t>
+                <t t-if="order.note">
+                    # Note: <t t-esc="order.note"/>
+                </t>
+            </span>
+            <div class="card-content">
+                <div class="table-responsive" style="margin-top: 45px">
+                    <table class="table table-striped">
+                        <tbody>
+                           <t t-call="kitchen_lines"/>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="kitchen_lines">
+        <t t-set="count" t-value="1"/>
+        <tr style="border-bottom: 1px solid" class="emph">
+            <td class="text-center"></td>
+            <td class="text-left">Name</td>
+            <td class="text-left">Qty</td>
+            <td class="text-left">State</td>
+        </tr>
+        <t t-foreach="order['cancelled'] || []" t-as="line">
+            <tr t-attf-class="line-select {{ line.state }} {{ widget.lines_selected.length and widget.lines_selected.indexOf(line.uid)  != -1 ? 'item-selected' : '' }}"
+                t-att-data-id="line.uid">
+                <td class="text-center"><t t-esc="count"/></td>
+                <td class="text-left">
+                    <t t-esc="line.name"/>
+                    <t t-if="line.uom">
+                        with <t t-esc='line.uom.name'/>
+                    </t>
+                    <t t-if="line.tags">
+                        <ul class='line-tags'>
+                            <t t-foreach="line.tags" t-as="tag">
+                                <i class="fa fa-caret-right"/>
+                                <t t-esc="tag.name"/>
+                            </t>
+                        </ul>
+                    </t>
+                    <t t-if="line.note">
+                        <ul class='line-tags'>
+                            <t t-esc="line.note"/>
+                        </ul>
+                    </t>
+                    <t t-if="line.combo_items">
+                        <ul class='line-tags'>
+                            <t t-foreach="line.combo_items" t-as="combo_item">
+                                <t t-esc="combo_item.product_id[1]"/>
+                                with qty :
+                                <t t-esc="combo_item.quantity"/>
+                            </t>
+                        </ul>
+                    </t>
+                    <t t-if="line.variants">
+                        <ul class='line-tags'>
+                            <t t-foreach="line.variants" t-as="variant">
+                                <t t-esc="variant.attribute_id[1]"/>
+                                <t t-esc="variant.value_id[1]"/>
+                            </t>
+                        </ul>
+                    </t>
+                    <span class="order-line-time">
+                        <i class="fa fa-clock"></i>
+                        <t t-esc="line.time"/>
+                    </span>
+                </td>
+                <td class="text-left"><t t-esc="line.qty"/></td>
+                <td class="text-left"><span t-attf-class="line-state"><t t-esc="line.state"/></span></td>
+                <td class="text-left"><span class="btn btn-danger kitchen_delivery" title="Set Done"><i class='fa fa-check'/></span></td>
+            </tr>
+            <t t-set="count" t-value="count + 1"/>
+        </t>
+        <t t-foreach="order['new'] || []" t-as="line">
+            <tr t-attf-class="line-select {{ line.state }} {{ widget.lines_selected.length and widget.lines_selected.indexOf(line.uid)  != -1 ? 'item-selected' : '' }}"
+                t-att-data-id="line.uid">
+                <td class="text-center"><t t-esc="count"/></td>
+                <td class="text-left">
+                    <t t-esc="line.name"/>
+                    <t t-if="line.uom">
+                        with <t t-esc='line.uom.name'/>
+                    </t>
+                    <t t-if="line.tags">
+                        <ul class='line-tags'>
+                            <t t-foreach="line.tags" t-as="tag">
+                                <i class="fa fa-caret-right"/>
+                                <t t-esc="tag.name"/>
+                            </t>
+                        </ul>
+                    </t>
+                    <t t-if="line.note">
+                        <ul class='line-tags'>
+                            <t t-esc="line.note"/>
+                        </ul>
+                    </t>
+                    <t t-if="line.combo_items">
+                        <ul class='line-tags'>
+                            <t t-foreach="line.combo_items" t-as="combo_item">
+                                <t t-esc="combo_item.product_id[1]"/>
+                                with qty :
+                                <t t-esc="combo_item.quantity"/>
+                            </t>
+                        </ul>
+                    </t>
+                    <t t-if="line.variants">
+                        <ul class='line-tags'>
+                            <t t-foreach="line.variants" t-as="variant">
+                                <t t-esc="variant.attribute_id[1]"/>
+                                <t t-esc="variant.value_id[1]"/>
+                            </t>
+                        </ul>
+                    </t>
+                    <span class="order-line-time">
+                        <i class="fa fa-clock"></i>
+                        <t t-esc="line.time"/>
+                    </span>
+                </td>
+                <td class="text-left"><t t-esc="line.qty"/></td>
+                <td class="text-left"><span t-attf-class="line-state"><t t-esc="line.state"/></span></td>
+                <td class="text-left"><span class="btn btn-danger kitchen_delivery" title="Set Done"><i class='fa fa-check'/></span></td>
+            </tr>
+            <t t-set="count" t-value="count + 1"/>
+        </t>
+    </t>
+
+    <t t-name="refresh_screen_widget">
+        <div class="oe_status refresh_screen_widget">
+            <span class='js_msg oe_hidden'>0</span>
+            <div class="js_connected oe_icon"
+                 style="width: 1200px !important; font-weight: 400">
+                <i class='fa fa-keyboard'/>
+                No.5 -
+                <span style="color: #6EC89B !important">Refresh <t t-esc="widget.pos.config.screen_type"/></span>
+                Screen |
+                <i class='fa fa-keyboard'/>
+                <i class="fa fa-arrow-circle-left"/>
+                <i class="fa fa-arrow-circle-right"/>
+                <i class="fa fa-arrow-circle-up"/>
+                <i class="fa fa-arrow-circle-down"/> - <span style="color: #6EC89B !important">Select Ticket </span> |
+                <i class='fa fa-keyboard'/>
+                Enter -
+                <span style="color: #6EC89B !important">Set Ready/Done Line</span>
+                <i class='fa fa-keyboard'/>
+                Del -
+                <span style="color: #6EC89B !important">Done Order</span>
+            </div>
+            <div class="js_connecting oe_icon oe_hidden" style="width: 100% !important; font-weight: 400">
+                <i class='fa fa-fw fa-spin fa-spinner' role="img" aria-label="Total Done" title="Total Done"> Done</i>
+            </div>
+            <div class="js_disconnected oe_icon oe_red blink oe_hidden" aria-label="IoT Box offline"
+                 title="IoT Box offline" style="width: 100%; font-weight: 400">
+                <i class='fa fa-fw fa-refresh'></i>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="sort_kitchen_screen_items">
+        <div class="oe_status refresh_screen_widget">
+            <span class='js_msg oe_hidden'>0</span>
+            <div class="js_connected oe_icon oe_green"
+                 style="width: 120px !important; font-weight: 400">
+                <i class='fa fa-fw fa-list' role="img" aria-label="Sort Items" title="Sort Items"></i>
+                SORT
+            </div>
+        </div>
+    </t>
+
+</templates>

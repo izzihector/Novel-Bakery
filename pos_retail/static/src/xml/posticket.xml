@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="PosTicket">
+        <t t-jquery="div.pos-sale-ticket" t-operation="replace">
+        <div class="pos-sale-ticket">
+        <br/>
+            <div style="margin-top:-10;font-size:20px;font-family:Calibri;">
+                <t t-esc="widget.pos.company.name"/><br/>
+            </div>
+            <div style="font-size:10px;font-family:Calibri;">
+                <t t-esc="widget.pos.company.address"/><br/>
+            </div>
+            <div style="font-size:12px;font-family:Calibri;">
+                <t t-esc="widget.pos.company.phone || ''"/>
+            </div>
+            <div style="font-size:9px;font-family:Calibri;">
+                <t t-esc="widget.pos.company.website"/><br/>
+            </div>
+            <br/>
+            <div style="font-size:9px;font-family:Calibri;">
+                <strong> VAT# </strong> <t t-esc="widget.pos.company.vat"/><br/>
+            </div>
+            <div style="font-size:9px;font-family:Calibri;">
+                <strong> Branch Address: </strong> <t t-esc="widget.pos.config.pos_branch_address"/><br/>
+            </div>
+            <div style="font-size:9px;font-family:Calibri;">
+                <strong> Branch Location: </strong> <t t-esc="widget.pos.config.pos_branch_location"/><br/>
+            </div>
+
+            <table>
+
+                <tr>
+                     <td style="font-size:12px;font-family:Calibri;text-align:left;"><strong>
+                       <t t-esc="order.name"/></strong></td>
+                </tr>
+                <tr>
+                     <td style="font-size:12px;font-family:Calibri;text-align:left;"><strong>
+                         Cashier:</strong><t t-esc="widget.pos.cashier ? widget.pos.cashier.name : widget.pos.user.name"/></td>
+                </tr>
+                <tr>
+                     <td style="font-size:12px;font-family:Calibri;text-align:left;"><strong>
+                         Date:</strong><t t-esc="moment().format('L')"/></td>
+                </tr>
+                <tr>
+                    <td style="font-size:12px;font-family:Calibri;text-align:left;">
+                        <strong>Time:</strong><t t-esc="moment().format('LT')"/></td>
+                </tr>
+<t t-if="widget.pos.config.pos_branch_id[1] !='Takhasussi'">
+                <tr>
+                    <td style="font-size:12px;font-family:Calibri;text-align:left;"><strong>
+                        Table # </strong><t t-esc="widget.pos.table.name"/></td>
+                </tr>
+                </t>
+</table>
+
+
+        <div>----------------------------------------</div>
+
+          <table>
+                <thead>
+                <colgroup>
+                    <col width='3'/>
+                    <col width='16'/>
+                    <col width='5'/>
+                    <col width='3'/>
+                    <col width='6'/>
+                </colgroup>
+            <strong><tr>
+                        <th class="pos-left-align" style="font-size:8px;font-family:Calibri;">Nos.</th>
+                        <th class="pos-left-align" style="font-size:8px;font-family:Calibri;">Item(s)</th>
+                        <th class="pos-center-align" style="font-size:8px;font-family:Calibri;">Price </th>
+                        <th class="pos-center-align" style="font-size:8px;font-family:Calibri;">Qty</th>
+                        <th class="pos-center-align" style="font-size:8px;font-family:Calibri;">Amount</th>
+                    </tr></strong>
+            <br/>
+            <strong><tr>
+                        <th class="pos-left-align" style="font-size:9px;font-family:Calibri;">رقم</th>
+                        <th class="pos-left-align" style="font-size:9px;font-family:Calibri;">مادة</th>
+                        <th class="pos-center-align" style="font-size:9px;font-family:Calibri;">السعر </th>
+                        <th class="pos-center-align" style="font-size:9px;font-family:Calibri;">كمية</th>
+                        <th class="pos-center-align" style="font-size:9px;font-family:Calibri;">مبلغ</th>
+                    </tr></strong>
+                </thead>
+      </table>
+
+        <div>----------------------------------------</div>
+        <table>
+          <tbody>
+            <colgroup>
+                <col width='2' height='0.5'/>
+                <col width='17' height='0.5'/>
+                <col width='6' height='0.5'/>
+                <col width='3' height='0.5'/>
+                <col width='6' height='0.5'/>
+            </colgroup>
+            <t t-set="i" t-value="1"/>
+            <tr t-foreach="orderlines" t-as="orderline">
+              <td class="pos-left-align" style="font-size:8px;font-family:Calibri;">
+                <strong>
+                  <t t-esc="i"/>
+                </strong>
+              </td>
+              <td class="pos-left-align" style="font-size:9px;font-family:Calibri;">
+                <t t-esc="orderline.get_product().display_name"/>
+              </td>
+            
+              <td class="pos-center-align" style="font-size:7.5px;font-family:Calibri;">
+                <t t-if ="orderline.get_product().default_code == 'GD'">
+                  <strong><t t-esc="widget.format_currency(orderline.price)"/></strong>
+                </t>
+                <t t-if ="orderline.get_product().default_code != 'GD'">
+                  <strong><t t-esc="widget.format_currency(orderline.get_product().list_price)"/></strong>
+                </t>
+                <t t-if="orderline.get_discount() > 0">
+                  <div style="font-size:6.5px;font-family:Calibri;">
+                    <t t-if ="widget.pos.company.discount_type == 'amount'">
+                      <t t-esc="widget.format_currency(orderline.get_discount())"/> Disc.
+                    </t>
+                    <t t-if ="widget.pos.company.discount_type == 'per'">
+                      <t t-esc="orderline.get_discount()"/>% Disc.
+                    </t>
+                  </div>
+                </t>
+              </td>
+              <td class="pos-center-align" style="font-size:7px;font-family:Calibri;">
+                <strong><t t-esc="orderline.get_quantity()"/></strong>
+              </td>
+              <t t-if ="orderline.get_product().default_code == 'GD'">
+                <td class="pos-right-align" style="font-size:7px;font-family:Calibri;">
+                  <strong>
+                    <t t-esc="widget.format_currency(orderline.price)"/>
+                  </strong>
+                </td>
+              </t>
+              <t t-if ="orderline.get_product().default_code != 'GD'">
+                <td class="pos-right-align" style="font-size:7px;font-family:Calibri;">
+                  <strong><t t-esc="widget.format_currency(orderline.get_product().list_price*orderline.get_quantity())"/></strong>
+                </td>
+              </t>
+              <t t-set="i" t-value="i+1"/>
+            </tr>
+          </tbody>
+        </table>
+        <br/>
+        <div>-----------------SUMMARY----------------</div>
+
+            <table class='receipt-total'>
+                <tr>
+                    <td style="font-size:8px;font-family:Calibri;">Total-المبلغ الإجمالي(Exc. VAT)</td>
+                    <td class="pos-right-align">
+                        <strong><t style="font-size:10px;font-family:Calibri;" t-esc="widget.format_currency(order.get_total_without_tax())"/></strong>
+                    </td>
+                </tr>
+         <tr>
+                    <td style="font-size:8px;font-family:Calibri;">Discount-تخفيض</td>
+                    <td class="pos-right-align">
+                        <strong><t style="font-size:10px;font-family:Calibri;" t-esc="widget.format_currency(order.get_total_discount())"/></strong>
+                    </td>
+                </tr>
+                <t t-foreach="order.get_tax_details()" t-as="taxdetail">
+                    <tr>
+                        <td style="font-size:7.5px;font-family:Calibri;"><t t-esc="taxdetail.name" /></td>
+                        <td class="pos-right-align">
+                            <strong><t style="font-size:10px;font-family:Calibri;" t-esc="widget.format_currency(taxdetail.amount)" /></strong>
+                        </td>
+                    </tr>
+                </t>
+
+                <tr>
+                    <td style="font-size:8px;font-family:Calibri;"><strong>Net Total-صافي الإجمالي (Inc. VAT)</strong></td>
+                    <td class="pos-right-align">
+                        <strong><t style="font-size:10px;font-family:Calibri;" t-esc="widget.format_currency(order.get_total_with_tax())"/></strong>
+                    </td>
+                </tr>
+            </table>
+      <br/>
+        <div>----------------SETTLEMENT-----------------</div>
+            <table class='receipt-paymentlines'>
+                <t t-foreach="paymentlines" t-as="line">
+                  <tr>
+                      <td><strong><t t-esc="line.name"/></strong></td>
+                      <td class="pos-right-align"><strong><t t-esc="widget.format_currency(line.get_amount())"/></strong></td>
+                  </tr>
+                </t>
+            </table>
+            <table class='receipt-change'>
+                <tr>
+          <td><strong>Change:</strong></td><td class="pos-right-align">
+                      <strong><t t-esc="widget.format_currency(order.get_change())"/></strong>
+                    </td>
+        </tr>
+            </table>
+        <div>----------------------------------------</div>
+          <table style="font-size:10px;font-family:Calibri;">
+                <thead>
+                <tr>
+                        <th class="pos-center-align">Amount</th>
+                        <th class="pos-center-align">VAT%</th>
+                        <th class="pos-center-align">VAT </th>
+                        <th class="pos-center-align">Net.Amt</th>
+                    </tr>
+                </thead>
+      </table>
+        <div>----------------------------------------</div>
+            <table style="font-size:10px;font-family:Calibri;">
+                <tr>
+                    <td class="pos-left-align"><strong><t t-esc="widget.format_currency(order.get_total_without_tax())"/></strong></td>
+                  <t t-foreach="order.get_tax_details()" t-as="taxdetail">
+                      <td class="pos-center-align"><strong><t t-esc="taxdetail.name"/></strong></td>
+                      <td class="pos-center-align"><strong><t t-esc="widget.format_currency(taxdetail.amount)"/></strong></td>
+          </t>
+                  <td class="pos-right-align"><strong><t t-esc="widget.format_currency(order.get_total_with_tax())"/></strong></td>
+                </tr>
+      </table>
+        <div>----------------------------------------</div>
+
+            <div><span class="pos-center-align" style="font-size:10px;font-family:Calibri;"><strong>Thank You...  Visit Again...</strong></span></div>
+        </div>
+
+    </t>
+
+        <t t-jquery="br" t-operation="replace"/>
+        <t t-jquery="div[class*='pos-center-align']" t-operation="replace">
+            <t t-if="order.formatted_validation_date">
+                <div class="pos-center-align"><t t-esc="order.formatted_validation_date"/> | <t t-esc="order.name"/></div>
+            </t>
+            <t t-if="order.date">
+                <div class="pos-center-align"><t t-esc="order.date"/> | <t t-esc="order.name"/></div>
+            </t>
+        </t>
+        <t t-jquery="div[class*='receipt-user']" t-operation="replace">
+            <div class="receipt-user">
+                Seller: <t t-esc="widget.pos.get_cashier().name"/>
+            </div>
+            <br/>
+            <t t-if="order.get_client()">
+                Customer: <t t-esc="order.get_client().name"/>
+            </t>
+        </t>
+        <t t-jquery="table[class*='receipt-orderlines']" t-operation="replace">
+            <t t-if="widget.pos.config.category_wise_receipt">
+                <t t-set='index' t-value="1"/>
+                <tr t-foreach="receipt['orderlines_by_category_name']" t-as="category">
+                    <t t-set='orderlines' t-value="receipt['orderlines_by_category_name'][category]" />
+                    <tr>
+                        <td><t t-esc="index"/>. <t t-esc='category' /></td>
+                        <td class="pos-right-align">
+                            with
+                        </td>
+                        <td class="pos-right-align">
+                            <t t-if="orderlines.length == 1">
+                                (1) item
+                            </t>
+                            <t t-if="orderlines.length > 1">
+                                (<t t-esc='orderlines.length' />) items
+                            </t>
+                        </td>
+                    </tr>
+                    <t t-set='index' t-value="index + 1"/>
+                    <table class='receipt-orderlines'>
+                        <colgroup>
+                            <col width='50%'></col>
+                            <col width='25%'></col>
+                            <col width='25%'></col>
+                        </colgroup>
+                        <tr t-foreach="orderlines" t-as="orderline">
+                            <td>
+                                <t t-if="widget.pos.config.display_image_receipt">
+                                    <img class='orderline_image' t-att-src="orderline.get_line_image()"/>
+                                </t>
+                                <t t-esc="orderline.get_product().display_name"/>
+                                <t t-if="orderline.get_discount() > 0">
+                                    <div>
+                                    With a <t t-esc="orderline.get_discount()"/>% discount
+                                    </div>
+                                </t>
+                                <t t-if="widget.pos.config.display_tax_receipt and orderline.get_tax() > 0">
+                                    <div>
+                                        Tax: <t t-esc="widget.format_currency(orderline.get_tax().toFixed(2))"/>
+                                    </div>
+                                </t>
+                                <t t-if="orderline.get_discount() > 0">
+                                    <div>
+                                        Discount: <t t-esc="orderline.get_discount()"/> %
+                                    </div>
+                                </t>
+                                <t t-if="orderline.discount_reason">
+                                    <div>
+                                        <t t-esc="orderline.discount_reason"/>
+                                    </div>
+                                </t>
+                                <t t-if="orderline.packaging">
+                                    <div>
+                                        Packaging: <t t-esc="orderline.packaging.name"/>
+                                    </div>
+                                </t>
+                                <t t-if="orderline.pack_lot_lines and orderline.pack_lot_lines.models">
+                                    <t t-foreach="orderline.pack_lot_lines.models" t-as="lot_model">
+                                        <div>
+                                            Lot: <t t-esc="lot_model['attributes']['lot_name']"/>
+                                        </div>
+                                    </t>
+                                </t>
+                                <t t-if="orderline.combo_items">
+                                    <t t-foreach="orderline.combo_items" t-as="combo_item">
+                                        <div>
+                                            <t t-esc="combo_item.product_id[1]"/> With qty:  <t t-esc="combo_item.quantity * orderline['quantity']" />
+                                        </div>
+                                    </t>
+                                </t>
+                                <t t-if="orderline.get_line_note()">
+                                    <div>
+                                        <t t-esc="orderline.get_line_note()"/>
+                                    </div>
+                                </t>
+                                <t t-if="orderline.variants">
+                                    <t t-foreach="orderline.variants" t-as="variant">
+                                        <div>
+                                            <t t-esc="variant.value_id[1]"/> with <t t-esc="widget.format_currency(variant.price_extra, 'Price extra')" />
+                                        </div>
+                                    </t>
+                                </t>
+                                <t t-if="orderline.tags">
+                                    <t t-foreach="orderline.tags" t-as="tag">
+                                        <div>
+                                            <span class='bus-info' t-att-data-id="tag.id">
+                                                <i class="fa fa-tag"/><t t-esc="tag.name"/>
+                                            </span>
+                                        </div>
+                                    </t>
+                                </t>
+                            </td>
+                            <td class="pos-right-align">
+                                <t t-esc="orderline.get_quantity_str_with_unit()"/>
+                            </td>
+                            <td class="pos-right-align">
+                                <t t-esc="widget.format_currency(orderline.get_display_price())"/>
+                            </td>
+                        </tr>
+                    </table>
+                </tr>
+            </t>
+            <t t-if="!widget.pos.config.category_wise_receipt">
+                <table class='receipt-orderlines'>
+                    <colgroup>
+                        <col width='50%'></col>
+                        <col width='25%'></col>
+                        <col width='25%'></col>
+                    </colgroup>
+                    <tr t-foreach="orderlines" t-as="orderline">
+                        <td>
+                            <t t-if="widget.pos.config.display_image_receipt">
+                                <img class='orderline_image' t-att-src="orderline.get_line_image()"/>
+                            </t>
+                            <t t-esc="orderline.get_product().display_name"/>
+                            <t t-if="orderline.get_discount() > 0">
+                                <div>
+                                With a <t t-esc="orderline.get_discount()"/>% discount
+                                </div>
+                            </t>
+                            <t t-if="widget.pos.config.display_tax_receipt and orderline.get_tax() > 0">
+                                <div>
+                                    Tax: <t t-esc="widget.format_currency(orderline.get_tax().toFixed(2))"/>
+                                </div>
+                            </t>
+                            <t t-if="orderline.get_discount() > 0">
+                                <div>
+                                    Discount: <t t-esc="orderline.get_discount()"/> %
+                                </div>
+                            </t>
+                            <t t-if="orderline.discount_reason">
+                                <div>
+                                    <t t-esc="orderline.discount_reason"/>
+                                </div>
+                            </t>
+                            <t t-if="orderline.pack_lot_lines and orderline.pack_lot_lines.models">
+                                <t t-foreach="orderline.pack_lot_lines.models" t-as="lot_model">
+                                    <div>
+                                        Lot: <t t-esc="lot_model['attributes']['lot_name']"/>
+                                    </div>
+                                </t>
+                            </t>
+                            <t t-if="orderline.combo_items">
+                                <t t-foreach="orderline.combo_items" t-as="combo_item">
+                                    <div>
+                                        <t t-esc="combo_item.product_id[1]"/> With qty:  <t t-esc="combo_item.quantity * orderline['quantity']" />
+                                    </div>
+                                </t>
+                            </t>
+                            <t t-if="orderline.get_line_note()">
+                                <div>
+                                    <t t-esc="orderline.get_line_note()"/>
+                                </div>
+                            </t>
+                            <t t-if="orderline.variants">
+                                <t t-foreach="orderline.variants" t-as="variant">
+                                    <div>
+                                        <t t-esc="variant.value_id[1]"/> with <t t-esc="widget.format_currency(variant.price_extra, 'Price extra')" />
+                                    </div>
+                                </t>
+                            </t>
+                            <t t-if="orderline.tags">
+                                <t t-foreach="orderline.tags" t-as="tag">
+                                    <div>
+                                        <span class='bus-info' t-att-data-id="tag.id">
+                                            <i class="fa fa-tag"/><t t-esc="tag.name"/>
+                                        </span>
+                                    </div>
+                                </t>
+                            </t>
+                        </td>
+                        <td class="pos-right-align">
+                            <t t-esc="orderline.get_quantity_str_with_unit()"/>
+                        </td>
+                        <td class="pos-right-align">
+                            <t t-esc="widget.format_currency(orderline.get_display_price())"/>
+                        </td>
+                    </tr>
+                </table>
+            </t>
+        </t>
+        <t t-jquery="tr[class*='emph']" t-operation="after">
+            <t t-if="receipt['total_paid']">
+                <tr class="emph">
+                    <td>PAID :</td>
+                    <td class="pos-right-align">
+                        <t t-esc="widget.format_currency(receipt['total_paid'])"/>
+                    </td>
+                </tr>
+            </t>
+            <t t-if="receipt['total_due']">
+                <tr class="emph">
+                    <td>DUE :</td>
+                    <td class="pos-right-align">
+                        <t t-esc="widget.format_currency(receipt['total_due'])"/>
+                    </td>
+                </tr>
+            </t>
+            <t t-if="order.amount_debit">
+                <tr class="emph">
+                    <td>Debit :</td>
+                    <td class="pos-right-align">
+                        <t t-esc="widget.format_currency(order.amount_debit)"/>
+                    </td>
+                </tr>
+            </t>
+        </t>
+        <t t-jquery="t[t-if*='receipt.header']" t-operation="before">
+            <t t-if="order.location">
+                WH location: <t t-esc="order.location.name"/>
+            </t>
+            <t t-if="widget.pos.config.booking_orders_display_shipping_receipt">
+                <t t-if="order.delivery_address">
+                    Shipping address: <t t-esc="order.delivery_address"/>
+                    <br/>
+                </t>
+                <t t-if="order.delivery_date">
+                    Delivery Date: <t t-esc="order.delivery_date"/>
+                    <br/>
+                </t>
+                <t t-if="order.delivery_phone">
+                    Delivery Phone: <t t-esc="order.delivery_phone"/>
+                    <br/>
+                </t>
+            </t>
+            <t t-if="widget.pos.config.display_fiscal_position_receipt and order.fiscal_position">
+                <div>Fiscal Position: <t t-esc="order.fiscal_position.name"/></div>
+            </t>
+            <t t-set="client" t-value="order.get_client()"/>
+            <t t-if="client and widget.pos.config.receipt_customer_vat">
+                <t t-set="client" t-value="order.get_client()"/>
+                <div>Customer information:</div>
+                    Name: <t t-esc="client['name']"/><br/>
+                <t t-if="client['street']">
+                    Street: <t t-esc="client['street']"/><br/>
+                </t>
+                <t t-if="client['vat']">
+                    Tin: <t t-esc="client['vat']"/><br/>
+                </t>
+                <t t-if="client['email']">
+                    Email: <t t-esc="client['email']"/><br/>
+                </t>
+                <t t-if="client['phone'] or client['mobile']">
+                    Phone (mobile): <t t-esc="client['phone'] || client['mobile']"/><br/>
+                </t>
+            </t>
+            <t t-if="order.invoice_number and widget.pos.config.receipt_invoice_number">
+                <div>Invoice number: <t t-esc="order.invoice_number"/><br/></div>
+            </t>
+        </t>
+
+        <t t-jquery=".receipt-change" t-operation="after">
+            <t t-if="order.note">
+                <table>
+                    <t t-if="order.note">
+                        <tr>
+                            <td>Note:</td>
+                            <td class="pos-right-align">
+                                <t t-esc="order.note" />
+                            </td>
+                        </tr>
+                    </t>
+                </table>
+            </t>
+            <t t-if="order.signature">
+                <table>
+                    <tr>
+                        <td>Signature:</td>
+                        <td class="pos-right-align">
+                            <img class="product-img signature"
+                             t-att-src="widget.pos.get_order().get_signature() || ''"
+                             style="max-height:400px;max-width:100px"
+                        />
+                        </td>
+                    </tr>
+                </table>
+            </t>
+        </t>
+        <t t-jquery="t[t-if*='receipt.footer']" t-operation="after">
+            <t t-if="widget.pos.config.barcode_receipt">
+                <img id="barcode" class="barcode_receipt oe_hidden"/>
+            </t>
+            <t t-if="widget.pos.config.display_return_days_receipt">
+                <div class='pos-expire-date' font="b">
+                    Period times return: <t t-esc="widget.pos.config.pos_order_period_return_days"/> days
+                </div>
+            </t>
+        </t>
+    </t>
+
+</templates>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="OrderWidget">
+        <t t-jquery='div[class="line"]' t-operation="after">
+            <t t-if="order.note">
+                <t t-if="order.get_custom_notes()">
+                    <div class="order-note-line">
+                        <div class='entry note'>
+                            <span class="label">Note:</span>
+                            <div class='order_note'><span class="value"><t t-esc="order.note" />,
+                                <t t-foreach="order.custom_notes" t-as="custom_note">
+                                    <t t-if="custom_note_last">
+                                        <t t-esc="custom_note.name"/>
+                                    </t>
+                                    <t t-if="!custom_note_last">
+                                        <t t-esc="custom_note.name"/>,
+                                    </t>
+                                </t>
+                            </span></div>
+                        </div>
+                    </div>
+                </t>
+                <t t-if="!order.get_custom_notes()">
+                    <div class="order-note-line">
+                        <div class='entry note'>
+                            <span class="label">Note:</span>
+                            <div class='order_note'><span class="value"><t t-esc="order.note" /></span></div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+            <t t-if="!order.note">
+                <t t-if="order.get_custom_notes()">
+                    <div class="order-note-line">
+                        <div class='entry note'>
+                            <span class="label">Note:</span>
+                            <div class='order_note'><span class="value">
+                                <t t-foreach="order.custom_notes" t-as="custom_note">
+                                    <t t-if="custom_note_last">
+                                        <t t-esc="custom_note.name"/>
+                                    </t>
+                                    <t t-if="!custom_note_last">
+                                        <t t-esc="custom_note.name"/>,
+                                    </t>
+                                </t>
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </t>
+
+    <t t-extend="Orderline">
+        <t t-jquery="t[t-if*='line.get_note()']" t-operation="replace">
+            <t t-if="line.get_note()">
+                <t t-if="line.get_custom_notes()">
+                    <li class="info orderline-note">
+                        <i class='fa fa-tag'/><t t-esc="line.get_note()" />,
+                        <t t-foreach="line.get_custom_notes()" t-as="custom_note">
+                            <t t-if="custom_note_last">
+                                <t t-esc="custom_note.name"/>
+                            </t>
+                            <t t-if="!custom_note_last">
+                                <t t-esc="custom_note.name"/>,
+                            </t>
+                        </t>
+                    </li>
+                </t>
+                <t t-if="!line.get_custom_notes()">
+                    <li class="info orderline-note">
+                        <i class='fa fa-tag'/><t t-esc="line.get_note()" />
+                    </li>
+                </t>
+            </t>
+            <t t-if="!line.get_note()">
+                <t t-if="line.get_custom_notes()">
+                    <li class="info orderline-note">
+                        <i class='fa fa-tag'/><t t-foreach="line.get_custom_notes()" t-as="custom_note">
+                        <t t-if="custom_note_last">
+                            <t t-esc="custom_note.name"/>
+                        </t>
+                        <t t-if="!custom_note_last">
+                            <t t-esc="custom_note.name"/>,
+                        </t>
+                    </t>
+                    </li>
+                </t>
+            </t>
+        </t>
+    </t>
+
+
+    <t t-name="ProductNotesPopupWidget">
+        <div class="modal-dialog">
+            <div class="popup popup-confirm-note">
+                <div class="header title">
+                    <div class="current-title">
+                        <t t-esc="widget.options.title || '' " />
+                    </div>
+                    <div class="note_type">
+                        <div class="product_type button">Product Note</div>
+                        <div class="order_type button">Order Note</div>
+                    </div>
+                </div>
+
+                <textarea rows="1" cols="44" placeholder="Note"><t t-esc="widget.options.value || '' " /></textarea>
+                <div class="product_note">
+                    <ul>
+                        <t t-if="widget.notes">
+                            <t t-foreach="widget.notes.slice(0, 30)" t-as="note">
+                                <li>
+                                    <t t-if="note.active">
+                                        <div t-attf-data-id="{{note.id}}" t-attf-class="button active"><t t-esc="note.name"/></div>
+                                    </t>
+                                    <t t-if="!note.active">
+                                        <div t-attf-data-id="{{note.id}}" t-attf-class="button"><t t-esc="note.name"/></div>
+                                    </t>
+                                </li>
+                            </t>
+                        </t>
+                        <li><div data-id="other" class="button other-note">Other</div></li>
+                    </ul>
+                </div>
+                <div class="footer centered">
+                    <div class="button cancel">
+                        Cancel
+                    </div>
+                    <div class="button confirm">
+                        Ok
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="ProductNotes">
+        <tr class='note-line' t-attf-data-id='{{note.id}}'>
+            <td><t t-esc='note.name' /></td>
+        </tr>
+    </t>
+
+    <t t-name="ProductNotesScreenWidget">
+        <div class="notelist-screen screen">
+            <div class="screen-content">
+                <section class="top-content">
+                    <span class='button back note-back'>
+                        <i class='fa fa-angle-double-left'></i>
+                        Cancel
+                    </span>
+                    <span class='note-next button next highlight'>
+                        Apply
+                        <i class='fa fa-angle-double-right'></i>
+                    </span>
+                </section>
+                <section class="full-content">
+                    <div class='window'>
+                        <section class='subwindow'>
+                            <div class='subwindow-container'>
+                                <div class='subwindow-container-fix touch-scrollable scrollable-y'>
+                                    <table class='note-list'>
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class='note-list-contents'>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </t>
+
+</templates>

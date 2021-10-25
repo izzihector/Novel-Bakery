@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+          <template id="pos_retail.pos_sale_transaction_report_template">
+            <t t-call="web.html_container">
+                <t t-call="web.basic_layout">
+                <div class="page">
+                    <div align="center" style="border:1px solid black;margin:0 auto;padding:0 auto;font-size:25px">
+                        <strong>Transaction Report</strong>
+                    </div>
+                    <t t-foreach="docs" t-as="o">
+                        <table style="width:100%;margin-top:15px;">
+                            <tr>
+                                <td class="text-left">
+                                    Report Date
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="o.get_current_date()"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left">
+                                    Report Time
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="o.get_current_time()"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <table style="width:100%;margin-top:15px;">
+                            <tr>
+                                <td class="text-left">
+                                    Register #
+                                </td>
+                                <td class="text-right">
+                                    1
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left">
+                                    Batch #
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="o.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left">
+                                    Batch Status
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="o.state"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left">
+                                    Started at
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="o.get_session_date(o.start_at)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left">
+                                    Ended at
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="o.get_session_date(o.stop_at)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left">
+                                    Cashier
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="o.user_id.name"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table style="width:100%;margin-top:15px;">
+                            <thead>
+                                <tr class="text-left">
+                                    <th>Name</th>
+                                    <th>No.of Transaction</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                          <tbody>
+                            <tr t-foreach="o.get_journal_amount()" t-as="l">
+                                <t t-if="l.get('journal_id')">
+                                    <td class="text-left">
+                                        <span t-esc="l.get('journal_id')"/>
+                                    </td>
+                                </t>
+                                 <td class="text-center">
+                                    <span t-esc="l.get('no_of_trans')" />
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="l.get('trans_amt')" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </t>
+                </div>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

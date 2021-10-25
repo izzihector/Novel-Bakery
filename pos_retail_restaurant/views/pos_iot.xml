@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="pos_iot_form" model="ir.ui.view">
+            <field name="name">pos.iot.form</field>
+            <field name="model">pos.iot</field>
+            <field name="inherit_id" ref="pos_retail.pos_iot_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='kitchen']" position="attributes">
+                    <attribute name="attrs">{'invisible': 0}</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

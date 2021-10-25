@@ -36,14 +36,15 @@ class ExpenseTransaction(models.Model):
                                     track_visibility='onchange', states={'draft': [('readonly', False)]})
     # When payment_type is bank_cash
     payment_journal_id = fields.Many2one("account.journal", string="Payment Method",
-                                         domain="[('type', 'in', ['bank', 'cash']),('company_id','=',company_id)]", readonly=True,
+                                         domain="[('type', 'in', ['bank', 'cash'])]", readonly=True,
                                          states={'draft': [('readonly', False)]})
     bank_account_id = fields.Many2one("account.account", string="Bank/Cash Account",
-                                         domain="[('user_type_id.type', '=', 'liquidity'),('company_id','=',company_id)]", readonly=True,
+                                         domain="[('user_type_id.type', '=', 'liquidity')]", readonly=True,
                                          states={'draft': [('readonly', False)]})
     # When payment_type is credit
     journal_id = fields.Many2one("account.journal", string="Amortization Journal",
-                                 domain="[('type', 'in', ['purchase', 'general']),('company_id','=',company_id)]", required=True)
+                                 domain="[('type', 'in', ['purchase', 'general'])]", readonly=True, required=True,
+                                 states={'draft': [('readonly', False)]})
     vendor_id = fields.Many2one("res.partner", string="Vendor",
                                  domain="[('supplier', '=', True)]", readonly=True,
                                  states={'draft': [('readonly', False)]})
@@ -58,17 +59,15 @@ class ExpenseTransaction(models.Model):
                                              'expense_transaction_id',
                                              string="Amortization Board Lines")
     entry_count = fields.Integer(compute='_entry_count', string='# Journal Entries')
-    type_jv = fields.Selection([('all_line', 'JV for all line'), ('each_line', 'JV for each line')],
-                               default='each_line')
     company_id = fields.Many2one('res.company', 'Company', required=True, default=lambda self: self.env.user.company_id)
 
     @api.multi
     @api.depends('amortization_board_ids.move_id')
     def _entry_count(self):
         for expense_transaction in self:
-            res = self.env['amortization.board.line'].search(
+            res = self.env['amortization.board.line'].search_count(
                 [('expense_transaction_id', '=', expense_transaction.id), ('move_id', '!=', False)])
-            expense_transaction.entry_count = res and len(set(res.mapped('move_id.id'))) or 0
+            expense_transaction.entry_count = res or 0
 
     @api.multi
     def open_entries(self):
@@ -104,11 +103,9 @@ class ExpenseTransaction(models.Model):
     @api.onchange('expense_nature')
     def onchange_expense_nature(self):
         if self.expense_nature == 'prepaid':
-            return {'domain': {'journal_id': [('type', 'in', ['purchase', 'general']),
-                                              ('company_id', '=', self.company_id.id)]}}
+            return {'domain': {'journal_id': [('type', 'in', ['purchase', 'general'])]}}
         if self.expense_nature == 'accrual':
-            return {'domain': {'journal_id': [('type', 'in', ['general']),
-                                              ('company_id', '=', self.company_id.id)]}}
+            return {'domain': {'journal_id': [('type', 'in', ['general'])]}}
 
 
     @api.onchange('payment_journal_id')
@@ -173,49 +170,27 @@ class ExpenseTransaction(models.Model):
     def create_expense_journal_entry(self):
         iml = []
         total_amount = 0
-        if self.type_jv == 'all_line':
-            for expense_detail_rec in self.expense_detail_ids:
-                iml.append((0, 0, {
-                    'name': expense_detail_rec.description,
-                    'debit': expense_detail_rec.price_total,
-                    'account_id': expense_detail_rec.prepaid_expense_account_id.id,
-                    'analytic_account_id': expense_detail_rec.analytic_account_id.id,
-                    'analytic_tag_ids': expense_detail_rec.analytic_tag_ids and [(6, 0, expense_detail_rec.analytic_tag_ids.ids)],
-                }))
-                total_amount += expense_detail_rec.price_total
+        for expense_detail_rec in self.expense_detail_ids:
             iml.append((0, 0, {
-                'name': self.reference,
-                'credit': total_amount,
-                'account_id': self.bank_account_id.id or self.journal_id.default_credit_account_id.id,
-                'analytic_account_id': self.expense_detail_ids and self.expense_detail_ids[0].analytic_account_id.id or False,
+                'name': expense_detail_rec.description,
+                'debit': expense_detail_rec.price_total,
+                'account_id': expense_detail_rec.prepaid_expense_account_id.id,
+                'analytic_account_id': expense_detail_rec.analytic_account_id.id,
+                'analytic_tag_ids': expense_detail_rec.analytic_tag_ids and [(6, 0, expense_detail_rec.analytic_tag_ids.ids)],
             }))
-            self.move_id = self.env['account.move'].create({
-                'journal_id': self.payment_journal_id.id,
-                'line_ids': iml,
-                'date': self.date,
-                'ref': self.reference,
-            })
-        if self.type_jv == 'each_line':
-            for expense_detail_rec in self.expense_detail_ids:
-                iml.append((0, 0, {
-                    'name': expense_detail_rec.description,
-                    'debit': expense_detail_rec.price_total,
-                    'account_id': expense_detail_rec.prepaid_expense_account_id.id,
-                    'analytic_account_id': expense_detail_rec.analytic_account_id.id,
-                    'analytic_tag_ids': expense_detail_rec.analytic_tag_ids and [(6, 0, expense_detail_rec.analytic_tag_ids.ids)],
-                }))
-                iml.append((0, 0, {
-                    'name': self.reference,
-                    'credit': expense_detail_rec.price_total,
-                    'account_id': self.bank_account_id.id or self.journal_id.default_credit_account_id.id,
-                    'analytic_account_id': self.expense_detail_ids and self.expense_detail_ids[0].analytic_account_id.id or False,
-                }))
-                self.move_id = self.env['account.move'].create({
-                    'journal_id': self.payment_journal_id.id,
-                    'line_ids': iml,
-                    'date': self.date,
-                    'ref': self.reference,
-                })
+            total_amount += expense_detail_rec.price_total
+        iml.append((0, 0, {
+            'name': self.reference,
+            'credit': total_amount,
+            'account_id': self.bank_account_id.id or self.journal_id.default_credit_account_id.id,
+            'analytic_account_id': self.expense_detail_ids.analytic_account_id.id,
+        }))
+        self.move_id = self.env['account.move'].create({
+            'journal_id': self.payment_journal_id.id,
+            'line_ids': iml,
+            'date': self.date,
+            'ref': self.reference,
+        })
         self.move_id.action_post()
 
     @api.multi
@@ -271,10 +246,10 @@ class ExpenseDetailsLine(models.Model):
                                              required=True)
     description = fields.Char(required=True, states={'draft': [('readonly', False)]})
     prepaid_expense_account_id = fields.Many2one("account.account", string="Prepaid/Accrual Expense account",
-                                                 domain="[('internal_type', '=', 'other'),('company_id','=',company_id)]",
+                                                 domain="[('internal_type', '=', 'other')]",
                                                  required=1)
     expense_account_id = fields.Many2one("account.account", string="Expense account",
-                                         domain="[('internal_type', '=', 'other'),('company_id','=',company_id)]",
+                                         domain="[('internal_type', '=', 'other')]",
                                          required=1)
     analytic_account_id = fields.Many2one("account.analytic.account", string="Analytic Account")
     analytic_tag_ids = fields.Many2many('account.analytic.tag', 'expense_tag_rel', 'expense_line_id',
@@ -285,7 +260,7 @@ class ExpenseDetailsLine(models.Model):
     quantity = fields.Float("Quantity", required=1)
     price_unit = fields.Float("Amount", required=1)
     price_total = fields.Float("Total", compute='_compute_price_total', store=True)
-    company_id = fields.Many2one(string="Company", related='expense_transaction_id.company_id', store=True, readonly=True)
+    company_id = fields.Many2one(string="Company", related='expense_transaction_id.company_id', readonly=True)
 
     _sql_constraints = [
         ('expense_date_greater', 'check(end_date >= start_date)',
@@ -297,11 +272,7 @@ class ExpenseDetailsLine(models.Model):
         res = super(ExpenseDetailsLine, self).default_get(fields)
         if 'reference' in self._context:
             res.update({
-                'description': self._context.get('reference'),
-            })
-        if 'company_id' in self._context:
-            res.update({
-                'company_id': self._context.get('company_id')
+                'description': self._context.get('reference')
             })
         return res
 
@@ -371,10 +342,10 @@ class AmortizationBoardLine(models.Model):
     start_date = fields.Date("Start Date", required=1)
     end_date = fields.Date("End Date", required=1)
     prepaid_expense_account_id = fields.Many2one("account.account", string="Prepaid/Accrual Expense account",
-                                                 domain="[('internal_type', '=', 'other'),('company_id','=',company_id)]",
+                                                 domain="[('internal_type', '=', 'other')]",
                                                  required=1)
     expense_account_id = fields.Many2one("account.account", string="Expense account",
-                                         domain="[('internal_type', '=', 'other'),('company_id','=',company_id)]",
+                                         domain="[('internal_type', '=', 'other')]",
                                          required=1)
     total_days = fields.Integer("Total Days")
     period_days = fields.Integer("Period Days")
@@ -383,83 +354,40 @@ class AmortizationBoardLine(models.Model):
     remaining_value = fields.Float("Remaining Value")
     move_id = fields.Many2one("account.move", string="Journal Entry",
                               readonly=True, copy=False)
-    company_id = fields.Many2one(string="Company", related='expense_transaction_id.company_id', store=True, readonly=True)
+    company_id = fields.Many2one(string="Company", related='expense_transaction_id.company_id', readonly=True)
 
     @api.multi
-    def post_entry(self, context=False, journal_id=False, group_entry=False):
-        if not group_entry:
-            for amortization_line in self:
-                iml = list()
-
-                iml.append((0, 0, {
-                    'name': amortization_line.expense_detail_line_id.description,
-                    'credit': amortization_line.amortization_amount,
-                    'account_id': amortization_line.prepaid_expense_account_id.id,
-                    'partner_id': amortization_line.expense_transaction_id.vendor_id.id,
-                    'analytic_account_id': amortization_line.expense_detail_line_id.analytic_account_id.id,
-                    'analytic_tag_ids': amortization_line.expense_detail_line_id.analytic_tag_ids and [
-                        (6, 0, amortization_line.expense_detail_line_id.analytic_tag_ids.ids)],
-                }))
-                iml.append((0, 0, {
-                    'name': amortization_line.expense_detail_line_id.description,
-                    'debit': amortization_line.amortization_amount,
-                    'account_id': amortization_line.expense_account_id.id,
-                    'partner_id': amortization_line.expense_transaction_id.vendor_id.id,
-                    'analytic_account_id': amortization_line.expense_detail_line_id.analytic_account_id.id,
-                    'analytic_tag_ids': amortization_line.expense_detail_line_id.analytic_tag_ids and [
-                        (6, 0, amortization_line.expense_detail_line_id.analytic_tag_ids.ids)],
-                }))
-                amortization_line.move_id = self.env['account.move'].create({
-                    'journal_id': journal_id or amortization_line.expense_transaction_id.journal_id.id,
-                    'partner_id': amortization_line.expense_transaction_id.vendor_id.id,
-                    'line_ids': iml,
-                    'date': amortization_line.start_date,
-                    'ref': amortization_line.expense_transaction_id.reference
-                })
-                amortization_line.move_id.action_post()
-
-            if all(amortization_line.move_id for amortization_line in self[0].expense_transaction_id.amortization_board_ids):
-                self[0].expense_transaction_id.action_full_amortization()
-
-        else:  # if Group Entry is Enabled
-            expense_detail_line_ids = list(set(self.mapped('expense_detail_line_id')))
-
-            for expense_detail_line_id in expense_detail_line_ids:
-                current_lines = self.filtered(lambda r: r.expense_detail_line_id == expense_detail_line_id)
-                amortization_amount = sum(current_lines.mapped('amortization_amount'))
-                iml = list()
-                last_amortization_line = current_lines[0]
-                iml.append((0, 0, {
-                    'name': last_amortization_line.expense_detail_line_id.description,
-                    'credit': amortization_amount,
-                    'account_id': last_amortization_line.prepaid_expense_account_id.id,
-                    'partner_id': last_amortization_line.expense_transaction_id.vendor_id.id,
-                    'analytic_account_id': last_amortization_line.expense_detail_line_id.analytic_account_id.id,
-                    'analytic_tag_ids': last_amortization_line.expense_detail_line_id.analytic_tag_ids and [
-                        (6, 0, last_amortization_line.expense_detail_line_id.analytic_tag_ids.ids)],
-                }))
-                iml.append((0, 0, {
-                    'name': last_amortization_line.expense_detail_line_id.description,
-                    'debit': amortization_amount,
-                    'account_id': last_amortization_line.expense_account_id.id,
-                    'partner_id': last_amortization_line.expense_transaction_id.vendor_id.id,
-                    'analytic_account_id': last_amortization_line.expense_detail_line_id.analytic_account_id.id,
-                    'analytic_tag_ids': last_amortization_line.expense_detail_line_id.analytic_tag_ids and [
-                        (6, 0, last_amortization_line.expense_detail_line_id.analytic_tag_ids.ids)],
-                }))
-                new_move_rec = self.env['account.move'].create({
-                    'journal_id': journal_id or last_amortization_line.expense_transaction_id.journal_id.id,
-                    'partner_id': last_amortization_line.expense_transaction_id.vendor_id.id,
-                    'line_ids': iml,
-                    'date': last_amortization_line.start_date,
-                    'ref': last_amortization_line.expense_transaction_id.reference
-                })
-                for current_line in current_lines:
-                    current_line.move_id = new_move_rec
-                new_move_rec.action_post()
-
-                if all(amortization_line.move_id for amortization_line in last_amortization_line.expense_transaction_id.amortization_board_ids):
-                    last_amortization_line.expense_transaction_id.action_full_amortization()
+    def post_entry(self, context=False, journal_id=False):
+        for amortization_line in self:
+            iml = list()
+            iml.append((0, 0, {
+                'name': amortization_line.expense_detail_line_id.description,
+                'credit': amortization_line.amortization_amount,
+                'account_id': amortization_line.prepaid_expense_account_id.id,
+                'partner_id': amortization_line.expense_transaction_id.vendor_id.id,
+                'analytic_account_id': amortization_line.expense_detail_line_id.analytic_account_id.id,
+                'analytic_tag_ids': amortization_line.expense_detail_line_id.analytic_tag_ids and [
+                    (6, 0, amortization_line.expense_detail_line_id.analytic_tag_ids.ids)],
+            }))
+            iml.append((0, 0, {
+                'name': amortization_line.expense_detail_line_id.description,
+                'debit': amortization_line.amortization_amount,
+                'account_id': amortization_line.expense_account_id.id,
+                'partner_id': amortization_line.expense_transaction_id.vendor_id.id,
+                'analytic_account_id': amortization_line.expense_detail_line_id.analytic_account_id.id,
+                'analytic_tag_ids': amortization_line.expense_detail_line_id.analytic_tag_ids and [
+                    (6, 0, amortization_line.expense_detail_line_id.analytic_tag_ids.ids)],
+            }))
+            amortization_line.move_id = self.env['account.move'].create({
+                'journal_id': journal_id or amortization_line.expense_transaction_id.journal_id.id,
+                'partner_id': amortization_line.expense_transaction_id.vendor_id.id,
+                'line_ids': iml,
+                'date': amortization_line.start_date,
+                'ref': amortization_line.expense_transaction_id.reference
+            })
+            amortization_line.move_id.action_post()
+        if all(amortization_line.move_id for amortization_line in self[0].expense_transaction_id.amortization_board_ids):
+            self[0].expense_transaction_id.action_full_amortization()
 
     _sql_constraints = [
         ('amortization_date_greater', 'check(end_date >= start_date)',

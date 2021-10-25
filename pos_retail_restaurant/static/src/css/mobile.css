@@ -1,0 +1,47 @@
+.pos.mobile .Cancel {
+    font-size: 30px;
+    line-height: 30px;
+}
+
+.pos.mobile .Done {
+    font-size: 30px;
+    line-height: 30px;
+}
+
+.pos.mobile .Error {
+    font-size: 30px;
+    line-height: 30px;
+}
+
+.pos.mobile .draft {
+    font-size: 30px;
+    line-height: 30px;
+}
+
+.pos.mobile .Not-enough-material {
+    font-size: 30px;
+    line-height: 30px;
+}
+
+.pos.mobile .Waiting {
+    font-size: 30px;
+    line-height: 30px;
+}
+
+.pos.mobile .High-Priority {
+    font-size: 30px;
+    line-height: 30px;
+}
+
+.pos.mobile .Delivery {
+    font-size: 30px;
+    line-height: 30px;
+}
+
+.pos.mobile .order-waiting-delivery {
+    font-size: 30px;
+    line-height: 30px;
+}
+.pos.mobile .order .orderline .btn {
+    top: 20px;
+}
